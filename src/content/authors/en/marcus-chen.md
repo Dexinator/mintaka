@@ -1,21 +1,21 @@
 ---
 name: Marcus Chen
-description: "Award-winning Visual Effects Supervisor and 3D Artist specializing in immersive digital experiences and virtual production"
+description: "Expert in digital tourism experiences and immersive audio guides, specializing in technology applied to cultural heritage"
 image:
   source: "@assets/images/authors/mintaka.png"
   alt: "Portrait of Marcus Chen"
 ---
 
-Marcus Chen is a Vancouver-based digital artist and VFX supervisor who has shaped the visual landscape of numerous high-profile projects across film, gaming, and interactive installations. Since founding his studio in 2015, he has pioneered innovative approaches to real-time rendering and virtual production.
+Marcus Chen is an innovator in the digital tourism field based in Barcelona, who has transformed how millions of visitors experience cultural heritage. Since founding his company in 2015, he has led the development of digital audio guides for over 50 tourist destinations across Europe and Latin America.
 
-With a background in computer science and fine arts from RISD, Marcus bridges the gap between technical innovation and artistic expression. His work has contributed to several Academy Award-nominated films and breakthrough VR experiences.
+With training in cultural anthropology and technological development, Marcus bridges deep understanding of heritage with the latest innovations in artificial intelligence and immersive experiences. His projects have been recognized with multiple international awards for sustainable tourism and digital innovation.
 
-Beyond his commercial work, Marcus dedicates time to exploring the intersection of AI and traditional art forms, regularly speaking at SIGGRAPH and leading workshops at various digital arts institutions.
+Beyond his commercial work, Marcus dedicates time to researching how technology can help preserve endangered languages and traditions, collaborating with UNESCO and local heritage conservation organizations.
 
 Areas of expertise:
-- Virtual Production
-- Real-time VFX
-- 3D Environment Design
-- Technical Direction
-- Procedural Art Systems
+- Digital Audio Guides
+- Immersive Tourism Experience
+- Artificial Intelligence in Tourism
+- Cultural Heritage Preservation
+- Sustainable Tourism and Technology
 
