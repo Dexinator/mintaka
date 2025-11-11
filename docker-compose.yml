@@ -1,0 +1,34 @@
+services:
+  # Production service - builds and runs the optimized site
+  mintaka-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mintaka-production
+    ports:
+      - "4321:4321"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  # Development service - runs with hot reload
+  mintaka-dev:
+    image: oven/bun:1
+    container_name: mintaka-development
+    working_dir: /app
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+    command: sh -c "bun install && bun run dev --host 0.0.0.0"
+    restart: unless-stopped
+    profiles:
+      - dev
