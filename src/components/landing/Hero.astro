@@ -12,7 +12,7 @@ const translatePath = useTranslatedPath(lang);
 		<div class="relative flex flex-1 flex-col justify-around rounded-lg pb-10 pt-20 lg:rounded-2xl">
 			<div class="flex justify-center">
 				<h1 class="text-center font-display text-5xl font-extrabold uppercase sm:text-7xl md:text-8xl lg:text-9xl">
-					<span class="bg-gradient-to-r from-[#474496] to-[#9DD3CA] bg-clip-text text-transparent">{t("hero.title.main")}</span>
+					<span class="hero-gradient-text" style="background: linear-gradient(90deg, #474496 0%, #9DD3CA 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; position: relative; z-index: 10;">{t("hero.title.main")}</span>
 					<span class="rotator relative inline-flex h-20 w-full justify-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl md:h-24 lg:h-32">
 						<span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
 							{t("hero.title.4")}
@@ -82,12 +82,33 @@ const translatePath = useTranslatedPath(lang);
 	}
 
 	/* Text rotator */
+	.rotator {
+		z-index: 1; /* Lower z-index than gradient text */
+		overflow: hidden !important; /* Clip overflowing text during animation */
+		position: relative; /* Ensure z-index context */
+	}
+
 	.rotator > span {
 		position: absolute;
+		z-index: 1; /* Keep rotator text below gradient text */
 	}
 
 	.rotator > span:not(:nth-child(1)) {
 		opacity: 0;
+	}
+
+	/* Gradient text with maximum compatibility */
+	.hero-gradient-text {
+		/* Important: inline styles take precedence, but these serve as fallback */
+		background: linear-gradient(90deg, #474496 0%, #9DD3CA 100%) !important;
+		-webkit-background-clip: text !important;
+		background-clip: text !important;
+		-webkit-text-fill-color: transparent !important;
+		color: transparent !important;
+		display: inline-block !important;
+		position: relative;
+		z-index: 10; /* Higher z-index to stay above rotator */
+		will-change: transform;
 	}
 </style>
 
@@ -100,22 +121,31 @@ const translatePath = useTranslatedPath(lang);
 	gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin);
 
 	function init() {
-		const childSplit = new SplitText(".hero h1", {
-			type: "lines",
-			linesClass: "split-child",
-		});
-		const parentSplit = new SplitText(".hero h1", {
-			linesClass: "split-parent",
-		});
+		// Create a wrapper for the gradient text to preserve it
+		const gradientSpan = document.querySelector('.hero-gradient-text');
+		if (gradientSpan) {
+			// Wrap the gradient text in a div to protect it from SplitText
+			const wrapper = document.createElement('div');
+			wrapper.style.display = 'inline-block';
+			wrapper.style.position = 'relative';
+			wrapper.style.zIndex = '10'; // Ensure wrapper also has higher z-index
+			wrapper.appendChild(gradientSpan.cloneNode(true));
+			gradientSpan.parentNode.replaceChild(wrapper, gradientSpan);
+		}
 
+		// Only split the rotator text, not the gradient text
+		const rotatorElement = document.querySelector(".hero .rotator");
+		const h1Element = document.querySelector(".hero h1");
+
+		// Animate the gradient text separately
 		gsap.timeline()
-			.from(childSplit.lines, {
+			.from(".hero-gradient-text", {
 				duration: 1.5,
 				yPercent: 100,
+				opacity: 0,
 				ease: "power4",
-				stagger: 0.1,
 			})
-			.set(".hero h1", { visibility: "visible" }, "<")
+			.set(".hero h1", { visibility: "visible" }, 0)
 			.then(() => {
 				const words = document.querySelectorAll(".hero .rotator > span");
 
