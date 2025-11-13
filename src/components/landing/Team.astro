@@ -1,5 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations, useTranslatedPath } from "@i18n/utils";
+import BlobAnimation from "@components/global/BlobAnimation.astro";
+import GrainyGradient from "@components/global/GrainyGradient.astro";
 
 const { class: className } = Astro.props;
 
@@ -14,11 +16,6 @@ const team = [
 		image: "/placeholder-team.jpg",
 	},
 	{
-		name: "Roberto Lana Holgado",
-		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
-	},
-	{
 		name: "Rut Lomeña Valbuena",
 		role: t("team.role.placeholder"),
 		image: "/placeholder-team.jpg",
@@ -27,37 +24,36 @@ const team = [
 		name: "Jorge Badillo Delgado",
 		role: t("team.role.placeholder"),
 		image: "/placeholder-team.jpg",
-	},
-	{
-		name: "Matthew Hilborn",
-		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
-	},
-	{
-		name: "Noelia de Juana",
-		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
-	},
+	}
 ];
 
 const collaborators = ["ASPAS", "ASPRODES"];
 ---
 
-<section id="team" class:list={["section team-section relative bg-white text-zinc-900", className]}>
-	<div class="wrapper col-span-12 py-32">
+<section id="team" class:list={["section team-section relative text-zinc-900", className]}>
+	<GrainyGradient
+		class="absolute inset-0 w-full h-full"
+		colorBg="#f4f4f5"
+		colorA="#9DD3CA"
+		colorB="#EE7088"
+		colorC="#474496"
+	>
+		<BlobAnimation />
+	</GrainyGradient>
+	<div class="wrapper col-span-12 py-32 relative z-10">
 		<div class="mb-20 text-center">
-			<h2 class="font-display text-5xl uppercase md:text-6xl lg:text-8xl">{t("team.title")}</h2>
+			<h2 class="font-display text-5xl uppercase md:text-6xl lg:text-8xl text-[#474496]">{t("team.title")}</h2>
 		</div>
 
 		<div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
 			{
 				team.map(({ name, role, image }) => (
 					<div class="team-member flex flex-col items-center text-center">
-						<div class="mb-4 h-48 w-48 overflow-hidden rounded-full bg-zinc-200">
+						<div class="mb-4 h-48 w-48 overflow-hidden rounded-full bg-white/80 backdrop-blur-sm shadow-lg">
 							<img src={image} alt={name} class="h-full w-full object-cover" />
 						</div>
 						<h3 class="text-xl font-bold">{name}</h3>
-						<p class="text-sm text-zinc-600">{role}</p>
+						<!-- <p class="text-sm text-zinc-600">{role}</p> -->
 					</div>
 				))
 			}
@@ -68,7 +64,7 @@ const collaborators = ["ASPAS", "ASPRODES"];
 			<div class="flex flex-wrap items-center justify-center gap-6">
 				{
 					collaborators.map((collaborator) => (
-						<div class="rounded-lg bg-zinc-100 px-6 py-3 font-semibold text-zinc-800">{collaborator}</div>
+						<div class="rounded-lg bg-white/70 backdrop-blur-sm px-6 py-3 font-semibold text-zinc-800 border-2 border-transparent hover:border-[#EE7088] transition-all">{collaborator}</div>
 					))
 				}
 			</div>
@@ -77,12 +73,23 @@ const collaborators = ["ASPAS", "ASPRODES"];
 </section>
 
 <style>
+	.team-section {
+		overflow: hidden;
+		position: relative;
+		isolation: isolate;
+	}
+
 	.team-member {
 		transition: transform 0.3s ease;
+		position: relative;
 	}
 
 	.team-member:hover {
 		transform: translateY(-5px);
+	}
+
+	.team-section :global(.grainy-gradient) {
+		border-radius: 0;
 	}
 </style>
 

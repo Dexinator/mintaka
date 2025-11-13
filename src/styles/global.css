@@ -3,10 +3,18 @@
 @tailwind utilities;
 
 @font-face {
-	font-family: "Midnight";
-	src: url("/fonts/Midnight.woff2") format("woff");
-	font-weight: normal;
+	font-family: "Raleway";
+	src: url("/fonts/Raleway/Raleway-VariableFont_wght.ttf") format("truetype");
+	font-weight: 100 900;
 	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Raleway";
+	src: url("/fonts/Raleway/Raleway-Italic-VariableFont_wght.ttf") format("truetype");
+	font-weight: 100 900;
+	font-style: italic;
 	font-display: swap;
 }
 
@@ -76,20 +84,20 @@ html {
 /* Selection */
 
 ::-moz-selection {
-	color: white;
-	background: orange;
+	color: #131313;
+	background: #9DD3CA;
 }
 ::selection {
-	color: white;
-	background: orange;
+	color: #131313;
+	background: #9DD3CA;
 }
 .dark ::-moz-selection {
-	color: orange;
-	background: white;
+	color: #9DD3CA;
+	background: #131313;
 }
 .dark ::selection {
-	color: orange;
-	background: white;
+	color: #9DD3CA;
+	background: #131313;
 }
 
 .select-none {

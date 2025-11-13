@@ -1,5 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations, useTranslatedPath } from "@i18n/utils";
+import BlobAnimation from "@components/global/BlobAnimation.astro";
+import GrainyGradient from "@components/global/GrainyGradient.astro";
 
 const { class: className } = Astro.props;
 
@@ -59,8 +61,17 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class:list={["section faq-section relative bg-white text-zinc-900", className]}>
-	<div class="wrapper col-span-12 flex min-h-screen w-full flex-col py-32 md:flex-row">
+<section id="faq" class:list={["section faq-section relative text-zinc-900", className]}>
+	<GrainyGradient
+		class="absolute inset-0 w-full h-full"
+		colorBg="#e4e4e7"
+		colorA="#474496"
+		colorB="#9DD3CA"
+		colorC="#EE7088"
+	>
+		<BlobAnimation />
+	</GrainyGradient>
+	<div class="wrapper col-span-12 flex min-h-screen w-full flex-col py-32 md:flex-row relative z-10">
 		<div class="title-container top-0 pt-10 md:sticky md:h-[30rem]">
 			<h2 class="font-display text-5xl md:text-6xl lg:text-8xl">FAQ</h2>
 		</div>
@@ -82,7 +93,7 @@ const faqs = [
 
 			{
 				faqs.map(({ question, answer }) => (
-					<details class="relative min-h-1 grow rounded-md border border-zinc-200 bg-zinc-50 text-lg transition-all hover:bg-zinc-100">
+					<details class="relative min-h-1 grow rounded-md border border-zinc-200/50 bg-white/80 backdrop-blur-sm text-lg transition-all hover:bg-white/90">
 						<summary class="gap-4 px-11 py-11 font-semibold">
 							{question}
 							<svg class="control-icon control-icon-expand" width="24" height="24" role="presentation">
@@ -98,7 +109,7 @@ const faqs = [
 			}
 		</div>
 	</div>
-	<div class="faq-more-questions col-span-12 flex flex-col items-center justify-center gap-8 pb-32">
+	<div class="faq-more-questions col-span-12 flex flex-col items-center justify-center gap-8 pb-32 relative z-10">
 		<div class="flex gap-10">
 			<span class="other-question-title opacity-0 text-zinc-900">{t("faq.otherquestions")}</span>
 			<svg
@@ -129,9 +140,9 @@ const faqs = [
 				</g>
 			</svg>
 		</div>
-		<div class="faq-contact-us-button squircle-bg rounded-lg bg-zinc-900 opacity-0 sm:ml-44" data-cursor-hover data-cursor-parallax>
+		<div class="faq-contact-us-button squircle-bg rounded-lg bg-[#474496] opacity-0 sm:ml-44 hover:bg-[#5a54b3] transition-all" data-cursor-hover data-cursor-parallax>
 			<a
-				class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-white transition-all hover:text-slate-200 sm:w-auto md:font-bold lg:h-10"
+				class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-white transition-all hover:text-[#9DD3CA] sm:w-auto md:font-bold lg:h-10"
 				href={translatePath("/contact/")}>
 				{t("contactus")}
 			</a>
@@ -140,13 +151,28 @@ const faqs = [
 </section>
 
 <style>
+	.faq-section {
+		overflow: hidden;
+		position: relative;
+		isolation: isolate;
+	}
+
+	.faq-section :global(.grainy-gradient) {
+		border-radius: 0;
+	}
+
 	details + details {
 		margin-top: 20px;
 	}
 
+	details {
+		transition: all 0.3s ease;
+	}
+
 	details[open] {
 		min-height: 50px;
-		box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+		background: white !important;
 	}
 
 	summary {

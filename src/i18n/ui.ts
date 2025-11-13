@@ -9,7 +9,7 @@ export const ui = {
 	es: {
 		or: "o",
 		contact: "Contacto",
-		contacts: "Contactos",
+		contacts: "Contacto",
 		contactus: "Contáctanos",
 		projects: "Proyectos",
 		services: "Servicios",

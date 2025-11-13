@@ -2,7 +2,7 @@
 const randomId = Math.random().toString(36).substring(2, 15);
 const filterUrlId = `url(#${randomId})`;
 
-const { colorBg = "#6cf901", colorA = "#EDB74D", colorB = "#EB6666", colorC = "#6FB18A", class: className, ...rest } = Astro.props;
+const { colorBg = "#474496", colorA = "#9DD3CA", colorB = "#EE7088", colorC = "#474496", class: className, ...rest } = Astro.props;
 ---
 
 <div class:list={[className, "grainy-gradient"]} {...rest}>
