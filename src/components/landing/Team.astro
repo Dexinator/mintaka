@@ -5,6 +5,8 @@ import GrainyGradient from "@components/global/GrainyGradient.astro";
 import aspasLogo from "@assets/images/team/aspas-logo.png";
 import asprodesLogo from "@assets/images/team/asprodes-logo.png";
 import jorgeBadilloImg from "@assets/images/team/jorge-badillo.png";
+import agustinRodriguezImg from "@assets/images/team/agustin-rodriguez.png";
+import rutLomenaImg from "@assets/images/team/rut-lomena.png";
 
 const { class: className } = Astro.props;
 
@@ -15,17 +17,17 @@ const translatePath = useTranslatedPath(lang);
 const team = [
 	{
 		name: "Agustín Rodríguez Zúñiga",
-		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
+		role: t("team.role.agustin"),
+		image: agustinRodriguezImg,
 	},
 	{
 		name: "Rut Lomeña Valbuena",
-		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
+		role: t("team.role.rut"),
+		image: rutLomenaImg,
 	},
 	{
 		name: "Jorge Badillo Delgado",
-		role: t("team.role.placeholder"),
+		role: t("team.role.jorge"),
 		image: jorgeBadilloImg,
 	}
 ];
@@ -67,7 +69,7 @@ const collaborators = [
 							<img src={typeof image === 'string' ? image : image.src} alt={name} class="h-full w-full object-cover" />
 						</div>
 						<h3 class="text-xl font-bold">{name}</h3>
-						<!-- <p class="text-sm text-zinc-600">{role}</p> -->
+						<p class="text-sm text-zinc-600">{role}</p>
 					</div>
 				))
 			}
