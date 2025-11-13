@@ -13,7 +13,7 @@ export default defineConfig({
 			},
 		},
 	},
-	site: "https://mintaka.co",
+	site: "https://audacetics.com",
 	i18n: {
 		defaultLocale: "es",
 		locales: ["es", "en"],

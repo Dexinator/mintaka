@@ -20,28 +20,28 @@ const { Content } = await entry.render();
 const seo: AstroSeoProps = {
 	title: `Project ${entry.data.title} - Majestico`,
 	description: entry.data.description,
-	canonical: `https://mintaka.co/en/work/${entry.slug}/`,
+	canonical: `https://audacetics.com/en/work/${entry.slug}/`,
 	openGraph: {
 		url: entry.slug,
 		title: entry.data.title,
 		description: "{frontmatter.description}",
 		images: [
 			{
-				url: "https://mintaka.co/opengraph/social-og.jpg",
+				url: "https://audacetics.com/opengraph/social-og.jpg",
 				width: 1200,
 				height: 630,
 				alt: "Social open graph",
 				type: "image/jpeg",
 			},
 			{
-				url: "https://mintaka.co/opengraph/twitter-og.jpg",
+				url: "https://audacetics.com/opengraph/twitter-og.jpg",
 				width: 4096,
 				height: 4096,
 				alt: "Twitter open graph",
 				type: "image/jpeg",
 			},
-			{ url: "https://mintaka.co/opengraph/social-og.jpg" },
-			{ url: "https://mintaka.co/opengraph/twitter-og.jpg" },
+			{ url: "https://audacetics.com/opengraph/social-og.jpg" },
+			{ url: "https://audacetics.com/opengraph/twitter-og.jpg" },
 		],
 		site_name: "YourSitesName",
 	},

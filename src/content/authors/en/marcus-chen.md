@@ -1,8 +1,8 @@
 ---
-name: Marcus Chen
+name: Rut Lomeña
 description: "Expert in digital tourism experiences and immersive audio guides, specializing in technology applied to cultural heritage"
 image:
-  source: "@assets/images/authors/mintaka.png"
+  source: "@assets/images/authors/audacetics.png"
   alt: "Portrait of Marcus Chen"
 ---
 

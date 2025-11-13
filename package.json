@@ -1,15 +1,15 @@
 {
-	"name": "@majesticooss/mintaka",
+	"name": "@audacetics/audacetics",
 	"type": "module",
 	"version": "0.0.1",
 	"private": true,
-	"description": "majestico.co website",
+	"description": "Audacetics website",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/majesticooss/mintaka.git"
+		"url": "https://github.com/audacetics/audacetics.git"
 	},
-	"bugs": "https://github.com/majesticooss/mintaka/issues",
-	"homepage": "https://mintaka.co",
+	"bugs": "https://github.com/audacetics/audacetics/issues",
+	"homepage": "https://audacetics.com",
 	"files": [
 		"*"
 	],

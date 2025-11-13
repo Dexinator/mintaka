@@ -1,10 +1,10 @@
 services:
   # Production service - builds and runs the optimized site
-  mintaka-prod:
+  audacetics-prod:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mintaka-production
+    container_name: audacetics-production
     ports:
       - "4321:4321"
     environment:
@@ -16,9 +16,9 @@ services:
       - prod
 
   # Development service - runs with hot reload
-  mintaka-dev:
+  audacetics-dev:
     image: oven/bun:1
-    container_name: mintaka-development
+    container_name: audacetics-development
     working_dir: /app
     ports:
       - "4321:4321"

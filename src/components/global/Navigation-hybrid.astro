@@ -17,26 +17,11 @@ let pages = [
 		title: "Inicio",
 		url: "/",
 	},
-	// {
-	// 	title: "Services",
-	// 	url: "/services",
-	// },
-	//{
-	//	title: "Blog",
-	//	url: "/blog/",
-	//},
 	{
 		title: t("contacts"),
 		url: "/contact/",
 	},
 ];
-
-// if (isDev) {
-// 	pages.push({
-// 		title: "Overview",
-// 		url: "/system/overview",
-// 	});
-// }
 
 const { pathname } = Astro.url;
 ---
@@ -125,10 +110,15 @@ const { pathname } = Astro.url;
 </header>
 
 <style>
-	/* Mix-blend-mode para efectos visuales dinámicos */
+	/* Mix-blend-mode sutil para efectos visuales */
 	.navigation {
-		mix-blend-mode: difference;
+		mix-blend-mode: multiply;
 		transition: all 0.5s ease;
+	}
+
+	/* En secciones oscuras cambiar a screen para invertir el efecto */
+	.navigation.on-dark {
+		mix-blend-mode: screen;
 	}
 
 	/* Desactivar mix-blend-mode cuando el menú móvil está abierto */
@@ -147,38 +137,21 @@ const { pathname } = Astro.url;
 		}
 	}
 
-	/* Nav container con mix-blend-mode activo */
+	/* Nav container con los colores originales de tu implementación */
 	.nav-container {
 		transition: background-color 0.5s ease, border-color 0.5s ease;
-		position: relative;
 	}
 
-	/*
-	 * Para lograr los colores deseados con mix-blend-mode: difference
-	 * Necesitamos usar colores complementarios/invertidos
-	 */
-
-	/* Light background sections (default - Hero, Team, FAQ) */
-	/* Para obtener blanco con morado en difference, usamos un color cercano al inverso */
+	/* Light background sections - exactamente como en tu implementación original */
 	.nav-container {
-		background-color: rgb(0, 0, 0) !important; /* Negro produce blanco en difference sobre fondos claros */
+		background-color: rgba(255, 255, 255, 0.95) !important;
 		border: 2px solid rgba(71, 68, 150, 0.2);
 	}
 
-	/* Dark background sections (Services, Tagline - purple #474496) */
-	/* Para obtener el morado deseado, usamos su complementario */
+	/* Dark background sections - morado de marca */
 	.navigation.on-dark .nav-container {
-		background-color: rgb(184, 187, 105) !important; /* Complementario del morado para producir el morado original */
+		background-color: #474496 !important;
 		border: 2px solid rgba(157, 211, 202, 0.2);
-	}
-
-	/* Estado colapsado */
-	.navigation.collapsed .nav-container {
-		background-color: rgba(0, 0, 0, 0.95) !important;
-	}
-
-	.navigation.on-dark.collapsed .nav-container {
-		background-color: rgba(184, 187, 105, 0.95) !important;
 	}
 
 	.resizable:before {
@@ -197,90 +170,76 @@ const { pathname } = Astro.url;
 		opacity: 1;
 	}
 
-	/* Menu items */
+	/* Menu items - colores originales */
 	nav a .menu-item-container {
 		border-radius: 0.45rem;
 		transition: background-color 0.3s ease;
-		position: relative;
-		isolation: isolate; /* Aislar el mix-blend-mode */
 	}
 
 	nav a .menu-item {
 		transition: color 0.3s ease;
-		/* El texto necesita colores invertidos para verse correctamente con difference */
-		color: rgb(184, 187, 105); /* Produce color morado #474496 tras difference */
-		font-weight: 600;
 	}
 
-	/* En secciones oscuras */
+	/* Light sections: morado text */
+	nav a .menu-item {
+		color: #474496;
+	}
+
+	/* Dark sections: white text */
 	.navigation.on-dark nav a .menu-item {
-		color: rgb(255, 255, 255); /* Blanco produce negro/oscuro tras difference en fondos oscuros */
+		color: #fff;
 	}
 
-	/* Hover states - desactivamos mix-blend localmente */
+	/* Hover states - Light sections */
 	nav ul:not(.collapsed) a:hover .menu-item-container {
-		background: #9DD3CA; /* Verde agua de la marca */
-		position: relative;
-		z-index: 1;
-	}
-
-	nav ul:not(.collapsed) a:hover .menu-item-container::before {
-		content: '';
-		position: absolute;
-		inset: 0;
 		background: #9DD3CA;
-		border-radius: 0.45rem;
-		mix-blend-mode: normal;
-		z-index: -1;
 	}
 
 	nav ul:not(.collapsed) a:hover .menu-item {
-		color: #474496; /* Morado de la marca */
-		mix-blend-mode: normal;
-		position: relative;
-		z-index: 2;
+		color: #474496;
 	}
 
-	/* Active states */
+	/* Hover states - Dark sections */
+	.navigation.on-dark nav ul:not(.collapsed) a:hover .menu-item-container {
+		background: #9DD3CA;
+	}
+
+	.navigation.on-dark nav ul:not(.collapsed) a:hover .menu-item {
+		color: #474496;
+	}
+
+	/* Active states - Light sections */
 	nav ul:not(.collapsed) a.active .menu-item-container {
 		background: #9DD3CA;
-		position: relative;
-		z-index: 1;
-	}
-
-	nav ul:not(.collapsed) a.active .menu-item-container::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: #9DD3CA;
-		border-radius: 0.45rem;
-		mix-blend-mode: normal;
-		z-index: -1;
 	}
 
 	nav ul:not(.collapsed) a.active .menu-item {
 		color: #474496;
-		mix-blend-mode: normal;
-		position: relative;
-		z-index: 2;
 	}
 
-	/* Secciones oscuras - hover y active */
-	.navigation.on-dark nav ul:not(.collapsed) a:hover .menu-item,
+	/* Active states - Dark sections */
+	.navigation.on-dark nav ul:not(.collapsed) a.active .menu-item-container {
+		background: #9DD3CA;
+	}
+
 	.navigation.on-dark nav ul:not(.collapsed) a.active .menu-item {
-		color: #474496; /* Mantener morado */
+		color: #474496;
 	}
 
 	/* Collapsed menu states */
 	nav ul.collapsed a.active .menu-item,
 	nav ul.collapsed a:hover .menu-item {
 		color: #9DD3CA;
-		mix-blend-mode: normal;
+	}
+
+	.navigation.on-dark nav ul.collapsed a.active .menu-item,
+	.navigation.on-dark nav ul.collapsed a:hover .menu-item {
+		color: #9DD3CA;
 	}
 
 	/* Mobile menu icon color */
 	.navigation button {
-		color: rgb(184, 187, 105); /* Produce morado tras difference */
+		color: #474496;
 		transition: color 0.3s ease;
 	}
 
@@ -290,52 +249,16 @@ const { pathname } = Astro.url;
 
 	.navigation button:hover {
 		color: #9DD3CA;
-		mix-blend-mode: normal;
 	}
 
 	/* Mobile mail icon */
 	.navigation .icon-mail {
-		color: rgb(184, 187, 105); /* Produce morado tras difference */
+		color: #474496;
 		transition: color 0.3s ease;
 	}
 
 	.navigation.on-dark .icon-mail {
 		color: white !important;
-	}
-
-	/* Fallback sin mix-blend-mode para navegadores que no lo soporten */
-	@supports not (mix-blend-mode: difference) {
-		.navigation {
-			mix-blend-mode: normal;
-		}
-
-		.nav-container {
-			background-color: rgba(255, 255, 255, 0.95) !important;
-			border: 2px solid rgba(71, 68, 150, 0.2);
-		}
-
-		.navigation.on-dark .nav-container {
-			background-color: #474496 !important;
-			border: 2px solid rgba(157, 211, 202, 0.2);
-		}
-
-		nav a .menu-item {
-			color: #474496;
-		}
-
-		.navigation.on-dark nav a .menu-item {
-			color: #ffffff;
-		}
-
-		.navigation button,
-		.navigation .icon-mail {
-			color: #474496;
-		}
-
-		.navigation.on-dark button,
-		.navigation.on-dark .icon-mail {
-			color: white;
-		}
 	}
 </style>
 
@@ -368,24 +291,14 @@ const { pathname } = Astro.url;
 			}
 		});
 
-		// Navigation color change for dark sections (purple backgrounds)
-		// El mix-blend-mode creará el efecto visual dinámicamente
-		// Agregamos la clase on-dark para ajustar los colores base
-
+		// Navigation color change for dark sections
 		ScrollTrigger.create({
 			trigger: ".services-section",
-			start: "top 100px", // Un poco después del top para una transición más suave
+			start: "top 100px",
 			endTrigger: ".team-section",
 			end: "top 100px",
 			toggleClass: { targets: ".navigation", className: "on-dark" },
-			markers: false,
-			onEnter: () => {
-				// Opcional: puedes agregar efectos adicionales aquí
-				console.log("Entrando a sección oscura");
-			},
-			onLeaveBack: () => {
-				console.log("Saliendo de sección oscura");
-			}
+			markers: false
 		});
 
 		// Light logo when Team section is visible

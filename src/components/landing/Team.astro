@@ -2,6 +2,9 @@
 import { getLangFromUrl, useTranslations, useTranslatedPath } from "@i18n/utils";
 import BlobAnimation from "@components/global/BlobAnimation.astro";
 import GrainyGradient from "@components/global/GrainyGradient.astro";
+import aspasLogo from "@assets/images/team/aspas-logo.png";
+import asprodesLogo from "@assets/images/team/asprodes-logo.png";
+import jorgeBadilloImg from "@assets/images/team/jorge-badillo.png";
 
 const { class: className } = Astro.props;
 
@@ -23,11 +26,22 @@ const team = [
 	{
 		name: "Jorge Badillo Delgado",
 		role: t("team.role.placeholder"),
-		image: "/placeholder-team.jpg",
+		image: jorgeBadilloImg,
 	}
 ];
 
-const collaborators = ["ASPAS", "ASPRODES"];
+const collaborators = [
+	{
+		name: "ASPAS",
+		logo: aspasLogo,
+		url: "https://aspas-salamanca.es"
+	},
+	{
+		name: "ASPRODES",
+		logo: asprodesLogo,
+		url: "https://asprodes.es/"
+	}
+];
 ---
 
 <section id="team" class:list={["section team-section relative text-zinc-900", className]}>
@@ -50,7 +64,7 @@ const collaborators = ["ASPAS", "ASPRODES"];
 				team.map(({ name, role, image }) => (
 					<div class="team-member flex flex-col items-center text-center">
 						<div class="mb-4 h-48 w-48 overflow-hidden rounded-full bg-white/80 backdrop-blur-sm shadow-lg">
-							<img src={image} alt={name} class="h-full w-full object-cover" />
+							<img src={typeof image === 'string' ? image : image.src} alt={name} class="h-full w-full object-cover" />
 						</div>
 						<h3 class="text-xl font-bold">{name}</h3>
 						<!-- <p class="text-sm text-zinc-600">{role}</p> -->
@@ -59,12 +73,20 @@ const collaborators = ["ASPAS", "ASPRODES"];
 			}
 		</div>
 
-		<div class="mx-auto mt-20 max-w-3xl text-center">
-			<h3 class="mb-6 text-2xl font-bold">{t("team.collaborates")}</h3>
-			<div class="flex flex-wrap items-center justify-center gap-6">
+		<div class="mx-auto mt-20 max-w-4xl text-center">
+			<h3 class="mb-10 text-3xl font-bold">{t("team.collaborates")}</h3>
+			<div class="flex flex-wrap items-center justify-center gap-12">
 				{
-					collaborators.map((collaborator) => (
-						<div class="rounded-lg bg-white/70 backdrop-blur-sm px-6 py-3 font-semibold text-zinc-800 border-2 border-transparent hover:border-[#EE7088] transition-all">{collaborator}</div>
+					collaborators.map(({ name, logo, url }) => (
+						<a
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="collaborator-link rounded-lg bg-white/70 backdrop-blur-sm px-12 py-10 border-2 border-transparent hover:border-[#EE7088] transition-all flex items-center justify-center hover:shadow-xl"
+							aria-label={`Visitar sitio web de ${name}`}
+						>
+							<img src={logo.src} alt={`Logo de ${name}`} class="h-32 w-auto object-contain md:h-40" />
+						</a>
 					))
 				}
 			</div>

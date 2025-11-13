@@ -1,22 +1,16 @@
-# [Mintaka](https://mintaka.majestico.co)
-
-> [!IMPORTANT]
-> Currently this theme only works with the premium version of GSAP, the steps to use the standard version will be available in the future.
+# Audacetics
 
 <a href="https://astro.build/">![Astro](.github/images/astro-icon.png)</a>
 <a href="https://tailwindcss.com/">![Tailwind](.github/images/tailwind-icon.png)</a>
 <a href="https://gsap.com/">![Gsap](.github/images/gsap.png)</a>
 
-Mintaka is a template made with [Astro](https://astro.build), [Tailwind](https://tailwindcss.com/) and [Gsap](https://gsap.com/)
+Audacetics is a website made with [Astro](https://astro.build), [Tailwind](https://tailwindcss.com/) and [Gsap](https://gsap.com/)
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/majesticooss/mintaka)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/audacetics/audacetics)
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/majesticooss/mintaka)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/audacetics/audacetics)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/majesticooss/mintaka)
-
-
-### [🧪 Site preview →](https://mintaka.majestico.co)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/audacetics/audacetics)
 
 ### [🧑‍🚀 Astro website →](https://astro.build/)
 
@@ -26,7 +20,7 @@ Mintaka is a template made with [Astro](https://astro.build), [Tailwind](https:/
 
 ## Preview
 
-![Mintaka Preview](.github/images/majestico_share.gif)
+![Audacetics Preview](.github/images/majestico_share.gif)
 
 ## 🧪 Test
 

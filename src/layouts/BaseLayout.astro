@@ -17,45 +17,38 @@ const { seo: seoProp } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 
-const shareImage = new URL("/images/meta/mintaka_share.gif", Astro.site).toString();
+const shareImage = new URL("/images/meta/OPimg.png", Astro.site).toString();
 
 const defaultSeo: AstroSeoProps = {
-	title: "Web Agency Leading in Performant Web Design Solutions - Mintaka Studio",
+	title: "Audacetics - Audioguías digitales",
 	description:
-		"Mintaka Studio excels in creating fast, user-friendly websites with a focus on aesthetic design and SEO optimization, ensuring a standout online presence",
-	canonical: "https://mintaka.co",
+		"Audacetics delivers innovative digital audio guide solutions for tourism and cultural experiences, combining technology with storytelling",
+	canonical: "https://audacetics.com",
 	openGraph: {
-		url: "https://mintaka.co",
-		title: "Web Agency Leading in Performant Web Design Solutions - Mintaka Studio",
+		url: "https://audacetics.com",
+		title: "Audacetics - Audioguías digitales",
 		description:
-			"Mintaka Studio excels in creating fast, user-friendly websites with a focus on aesthetic design and SEO optimization, ensuring a standout online presence",
+			"Audacetics delivers innovative digital audio guide solutions for tourism and cultural experiences, combining technology with storytelling",
 		images: [
 			{
 				url: shareImage,
-				width: 1200,
-				height: 630,
-				alt: "Social open graph",
-				type: "image/gif",
-			},
-			{
-				url: shareImage,
-				width: 4096,
-				height: 4096,
-				alt: "Twitter open graph",
-				type: "image/gif",
+				width: 695,
+				height: 695,
+				alt: "Audacetics - Digital Audio Guides",
+				type: "image/png",
 			},
 		],
-		site_name: "Mintaka",
+		site_name: "Audacetics",
 	},
 	twitter: {
-		handle: "@mintakastudio",
-		site: "@mintakastudio",
+		handle: "@audacetics",
+		site: "@audacetics",
 		cardType: "summary_large_image",
 	},
 	additionalMetaTags: [
 		{
 			name: "publisher",
-			content: "Mintaka Studio",
+			content: "Audacetics",
 		},
 	],
 };

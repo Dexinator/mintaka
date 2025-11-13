@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Mintaka is an Astro-based website template for digital audio guide services, built with Tailwind CSS and GSAP animations. The site is designed for tourism/cultural content delivery with built-in internationalization (i18n) support for Spanish (default) and English.
+Audacetics is an Astro-based website for digital audio guide services, built with Tailwind CSS and GSAP animations. The site is designed for tourism/cultural content delivery with built-in internationalization (i18n) support for Spanish (default) and English.
 
 ## Development Commands
 
@@ -18,7 +18,7 @@ Mintaka is an Astro-based website template for digital audio guide services, bui
 - **PWA Assets**: `bun run pwa:generate-assets` - Generate PWA assets from logo.svg
 
 ### Docker
-- Build: `docker build -t mintaka .`
+- Build: `docker build -t audacetics .`
 - Run: `docker-compose up`
 - The Dockerfile uses multi-stage builds with Bun runtime
 

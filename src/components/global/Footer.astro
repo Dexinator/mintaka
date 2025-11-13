@@ -1,52 +1,70 @@
 ---
-import Newsletter from "@components/blog/Newsletter.astro";
 import { getLangFromUrl, useTranslatedPath, useTranslations } from "@i18n/utils";
-import { Icon } from "astro-icon/components";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
 
-<footer class="section min-h-screen gap-y-10 py-3 lg:gap-y-32">
-	<div class="relative flex-grow"></div>
-	<div class="relative grid grid-cols-6 gap-y-20 lg:grid-cols-12 lg:text-xl">
-		<div class="col-span-6 col-start-1 grid grid-cols-6 gap-6 lg:col-span-8">
-			<div class="col-span-2 col-start-4 flex flex-col gap-2 lg:col-span-3">
-				<a href="https://twitter.com//" target="_blank">Twitter / X</a>
-				<a href="https://www.instagram.com//" target="_blank">Instagram</a>
-				<a href="https://www.linkedin.com/" target="_blank">Linkedin</a>
-				<a href="https://tiktok.com/" target="_blank">TikTok</a>
-			</div>
-			<div class="col-span-3 row-start-1 lg:col-span-2 lg:col-start-4 lg:row-start-auto">
-				<div class="flex flex-col gap-2">
-					<a href={translatePath("/")}>Home</a>
-					<a href={translatePath("/blog/")}>Blog</a>
-					<a href={translatePath("/tags/")}>Tags</a>
-					<a href={translatePath("/contact/")}>{t("contacts")}</a>
-					<a href={translatePath("/terms/")}>Terms</a>
-					<a href={translatePath("/privacy/")}>Privacy Policy</a>
-					<a href={translatePath("/rss.xml")}>RSS</a>
-				</div>
-			</div>
-			<div class="col-span-3 mt-10 lg:col-start-4">
-				<div class="relative flex flex-col overflow-hidden"></div>
-				<div class="relative mt-1 flex h-8 flex-col overflow-hidden">
-					<a href="mailto:test@mintaka.co" class="block cursor-pointer overflow-hidden">test@mintaka.co</a>
-				</div>
+<footer class="section gap-y-16 py-20 lg:gap-y-24 lg:py-32">
+	<div class="relative grid w-full grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-16">
+		<!-- Navigation Section -->
+		<div class="flex flex-col gap-4">
+			<h3 class="text-lg font-semibold uppercase tracking-wider opacity-60 lg:text-xl">Navegación</h3>
+			<nav class="flex flex-col gap-3 text-base lg:text-lg">
+				<a href={translatePath("/#hero")} class="transition-opacity hover:opacity-60">Inicio</a>
+				<a href={translatePath("/#services")} class="transition-opacity hover:opacity-60">Servicios</a>
+				<a href={translatePath("/#team")} class="transition-opacity hover:opacity-60">Equipo</a>
+				<a href={translatePath("/#faq")} class="transition-opacity hover:opacity-60">FAQ</a>
+				<a href={translatePath("/blog/")} class="transition-opacity hover:opacity-60">Blog</a>
+				<a href={translatePath("/contact/")} class="transition-opacity hover:opacity-60">{t("contacts")}</a>
+			</nav>
+		</div>
+
+		<!-- Contact Section -->
+		<div class="flex flex-col gap-4">
+			<h3 class="text-lg font-semibold uppercase tracking-wider opacity-60 lg:text-xl">Contacto</h3>
+			<div class="flex flex-col gap-3 text-base lg:text-lg">
+				<a href="mailto:info@audacetics.com" class="transition-opacity hover:opacity-60">info@audacetics.com</a>
 			</div>
 		</div>
-		<div class="col-span-6 row-start-1 text-5xl leading-tight lg:col-span-4 lg:row-start-auto lg:text-6xl">
-			<!-- Newsletter Section - Removed as per requirements -->
+
+		<!-- Social Section -->
+		<div class="flex flex-col gap-6">
+			<h3 class="text-lg font-semibold uppercase tracking-wider opacity-60 lg:text-xl">Síguenos</h3>
+			<a
+				href="https://www.instagram.com/audacetics/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="group flex items-center gap-4 transition-opacity hover:opacity-60"
+				aria-label="Síguenos en Instagram">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="48"
+					height="48"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="transition-transform duration-300 group-hover:scale-110">
+					<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+					<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+					<line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+				</svg>
+				<span class="text-xl lg:text-2xl">Instagram</span>
+			</a>
 		</div>
 	</div>
-	<div class="relative mt-4 flex w-full items-end justify-between gap-y-4 text-sm lg:text-xl lg:font-normal">
-		<div>©2023 YOUR COMPANY</div>
-		<!-- https://codepen.io/fliseno1k/pen/WNboLBy -->
+
+	<!-- Bottom Bar -->
+	<div class="relative mt-8 flex w-full items-center justify-between border-t border-current pt-8 text-sm opacity-60 lg:text-base">
+		<div>© 2025 Audacetics</div>
 		<button
 			id="go-top-button"
 			aria-label="Go to Top"
-			class="fill-transparent transition-colors duration-300 hover:fill-black hover:text-white"
+			class="fill-transparent transition-all duration-300 hover:scale-110 hover:fill-black hover:text-white"
 			data-cursor-hover
 			data-cursor-parallax>
 			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
@@ -55,8 +73,6 @@ const translatePath = useTranslatedPath(lang);
 				</g>
 			</svg>
 		</button>
-
-		<!-- Scroll Up Arrow -->
 	</div>
 </footer>
 

@@ -4,9 +4,9 @@
 	"display": "standalone",
 	"scope": "/",
 	"start_url": "/",
-	"description": "Web Agency Leading in Performant Web Design Solutions - Mintaka Studio",
-	"name": "Mintaka",
-	"short_name": "Mintaka",
+	"description": "Audacetics - Audioguías Digitales",
+	"name": "Audacetics",
+	"short_name": "Audacetics",
 	"icons": [
 		{
 			"src": "/pwa-64x64.png",

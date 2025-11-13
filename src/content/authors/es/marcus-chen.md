@@ -2,7 +2,7 @@
 name: Marcus Chen
 description: "Experto en experiencias turísticas digitales y audioguías inmersivas, especializado en tecnología aplicada al patrimonio cultural"
 image:
-  source: "@assets/images/authors/mintaka.png"
+  source: "@assets/images/authors/audacetics.png"
   alt: "Retrato de Marcus Chen"
 ---
 
