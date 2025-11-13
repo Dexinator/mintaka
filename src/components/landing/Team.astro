@@ -1,0 +1,116 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from "@i18n/utils";
+
+const { class: className } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const team = [
+	{
+		name: "Agustín Rodríguez Zúñiga",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+	{
+		name: "Roberto Lana Holgado",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+	{
+		name: "Rut Lomeña Valbuena",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+	{
+		name: "Jorge Badillo Delgado",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+	{
+		name: "Matthew Hilborn",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+	{
+		name: "Noelia de Juana",
+		role: t("team.role.placeholder"),
+		image: "/placeholder-team.jpg",
+	},
+];
+
+const collaborators = ["ASPAS", "ASPRODES"];
+---
+
+<section id="team" class:list={["section team-section relative bg-white text-zinc-900", className]}>
+	<div class="wrapper col-span-12 py-32">
+		<div class="mb-20 text-center">
+			<h2 class="font-display text-5xl uppercase md:text-6xl lg:text-8xl">{t("team.title")}</h2>
+		</div>
+
+		<div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+			{
+				team.map(({ name, role, image }) => (
+					<div class="team-member flex flex-col items-center text-center">
+						<div class="mb-4 h-48 w-48 overflow-hidden rounded-full bg-zinc-200">
+							<img src={image} alt={name} class="h-full w-full object-cover" />
+						</div>
+						<h3 class="text-xl font-bold">{name}</h3>
+						<p class="text-sm text-zinc-600">{role}</p>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="mx-auto mt-20 max-w-3xl text-center">
+			<h3 class="mb-6 text-2xl font-bold">{t("team.collaborates")}</h3>
+			<div class="flex flex-wrap items-center justify-center gap-6">
+				{
+					collaborators.map((collaborator) => (
+						<div class="rounded-lg bg-zinc-100 px-6 py-3 font-semibold text-zinc-800">{collaborator}</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.team-member {
+		transition: transform 0.3s ease;
+	}
+
+	.team-member:hover {
+		transform: translateY(-5px);
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function init() {
+		const members = gsap.utils.toArray(".team-member") as gsap.DOMTarget[];
+
+		members.forEach((member, i) => {
+			gsap.from(member, {
+				scrollTrigger: {
+					trigger: member,
+					start: "top bottom-=100",
+					end: "center center",
+					toggleActions: "play none none reverse",
+				},
+				opacity: 0,
+				y: 50,
+				duration: 0.6,
+				delay: i * 0.1,
+			});
+		});
+	}
+
+	document.removeEventListener("DOMContentLoaded", init);
+	document.addEventListener("DOMContentLoaded", init);
+</script>

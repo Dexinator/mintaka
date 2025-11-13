@@ -48,10 +48,18 @@ const faqs = [
 		question: t("faqs.question10"),
 		answer: t("faqs.answer10"),
 	},
+	{
+		question: t("faqs.question11"),
+		answer: t("faqs.answer11"),
+	},
+	{
+		question: t("faqs.question12"),
+		answer: t("faqs.answer12"),
+	},
 ];
 ---
 
-<section id="faq" class:list={["section faq-section relative bg-zinc-900 text-white", className]}>
+<section id="faq" class:list={["section faq-section relative bg-white text-zinc-900", className]}>
 	<div class="wrapper col-span-12 flex min-h-screen w-full flex-col py-32 md:flex-row">
 		<div class="title-container top-0 pt-10 md:sticky md:h-[30rem]">
 			<h2 class="font-display text-5xl md:text-6xl lg:text-8xl">FAQ</h2>
@@ -74,8 +82,8 @@ const faqs = [
 
 			{
 				faqs.map(({ question, answer }) => (
-					<details class="relative min-h-1 grow rounded-md border-zinc-800 bg-zinc-800 text-lg transition-all">
-						<summary class="gap-4 px-11 py-11">
+					<details class="relative min-h-1 grow rounded-md border border-zinc-200 bg-zinc-50 text-lg transition-all hover:bg-zinc-100">
+						<summary class="gap-4 px-11 py-11 font-semibold">
 							{question}
 							<svg class="control-icon control-icon-expand" width="24" height="24" role="presentation">
 								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#expand-more" />
@@ -84,7 +92,7 @@ const faqs = [
 								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close" />
 							</svg>
 						</summary>
-						<p class="px-11 pb-11 font-light text-zinc-200">{answer}</p>
+						<p class="px-11 pb-11 font-light text-zinc-700">{answer}</p>
 					</details>
 				))
 			}
@@ -92,10 +100,10 @@ const faqs = [
 	</div>
 	<div class="faq-more-questions col-span-12 flex flex-col items-center justify-center gap-8 pb-32">
 		<div class="flex gap-10">
-			<span class="other-question-title opacity-0">{t("faq.otherquestions")}</span>
+			<span class="other-question-title opacity-0 text-zinc-900">{t("faq.otherquestions")}</span>
 			<svg
 				fill="transparent"
-				stroke="#fff"
+				stroke="#18181b"
 				stroke-width="40px"
 				width="40"
 				height="40"
@@ -121,9 +129,9 @@ const faqs = [
 				</g>
 			</svg>
 		</div>
-		<div class="faq-contact-us-button squircle-bg-white rounded-lg bg-zinc-200 opacity-0 sm:ml-44" data-cursor-hover data-cursor-parallax>
+		<div class="faq-contact-us-button squircle-bg rounded-lg bg-zinc-900 opacity-0 sm:ml-44" data-cursor-hover data-cursor-parallax>
 			<a
-				class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-zinc-900 transition-all hover:text-black sm:w-auto md:font-bold lg:h-10"
+				class="flex h-10 w-full max-w-52 flex-1 items-center justify-center px-4 py-2 text-xl text-white transition-all hover:text-slate-200 sm:w-auto md:font-bold lg:h-10"
 				href={translatePath("/contact/")}>
 				{t("contactus")}
 			</a>
@@ -168,7 +176,7 @@ const faqs = [
 	}
 
 	.control-icon {
-		fill: white;
+		fill: #18181b;
 		transition: 0.3s ease;
 		pointer-events: none;
 	}

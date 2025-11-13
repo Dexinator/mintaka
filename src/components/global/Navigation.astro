@@ -2,7 +2,8 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import { getLangFromUrl, getUrlWithoutLang, useTranslations, useTranslatedPath } from "@i18n/utils";
-import audaceticsLogo from "@assets/images/global/audacetics-logo.png";
+import logoLight from "@assets/images/global/LOGOTIPO_FONDO_CLARO.svg";
+import logoDark from "@assets/images/global/LOGOTIPO_FONDO_OSCURO.svg";
 
 const isDev = import.meta.env.DEV;
 
@@ -42,8 +43,10 @@ const { pathname } = Astro.url;
 
 <header>
 	<a href={translatePath("/")} aria-label="Home" class="logo absolute z-50 flex h-[4.5rem] items-center md:h-[5.9rem]">
-		<Image src={audaceticsLogo} alt="Audacetics Logo" class="logo-img h-8 w-auto md:h-10" />
-	</a>
+		<div class="relative">
+			<Image src={logoLight} alt="Mintaka Logo" class="logo-light logo-img h-16 w-auto md:h-20 transition-opacity duration-500" />
+			<Image src={logoDark} alt="Mintaka Logo" class="logo-dark logo-img h-16 w-auto md:h-20 absolute inset-0 opacity-0 transition-opacity duration-500" />
+		</div>
 	</a>
 	<div data-xdata="{ open: false }" class="navigation fixed right-0 top-0 z-50" data-xbind.class="{'w-full navbar-open': open}">
 		<div class="ml-auto md:max-w-fit" data-xbind.class="{'max-w-3xl': open, 'max-w-[8rem]': !open }">
@@ -185,14 +188,41 @@ const { pathname } = Astro.url;
 	gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger);
 
 	function init() {
-		gsap.timeline({
-			defaults: {
-				duration: 1,
-				ease: "power2.out",
-			},
-		})
-			.from(".logo-svg path", { drawSVG: 0 })
-			.to(".logo-svg path", { fill: "#000", duration: 2 }, "<+=0.5");
+		// Logo alternation based on background color
+		const logoLight = document.querySelector(".logo-light");
+		const logoDark = document.querySelector(".logo-dark");
+
+		// Dark logo when Services section is visible
+		ScrollTrigger.create({
+			trigger: ".services-section",
+			start: "top bottom",
+			end: "top center",
+			scrub: 0.5,
+			markers: false,
+			onUpdate: (self) => {
+				const progress = self.progress;
+				if (logoLight && logoDark) {
+					logoLight.style.opacity = (1 - progress).toString();
+					logoDark.style.opacity = progress.toString();
+				}
+			}
+		});
+
+		// Light logo when Team section is visible
+		ScrollTrigger.create({
+			trigger: ".team-section",
+			start: "top center",
+			end: "top top",
+			scrub: 0.5,
+			markers: false,
+			onUpdate: (self) => {
+				const progress = self.progress;
+				if (logoLight && logoDark) {
+					logoLight.style.opacity = progress.toString();
+					logoDark.style.opacity = (1 - progress).toString();
+				}
+			}
+		});
 
 		let isHoveringMenu = false;
 		let menuCollapsed = false;

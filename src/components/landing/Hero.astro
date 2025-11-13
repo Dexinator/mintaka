@@ -13,16 +13,19 @@ const translatePath = useTranslatedPath(lang);
 			<div class="flex justify-center">
 				<h1 class="text-center font-display text-5xl font-extrabold uppercase sm:text-7xl md:text-8xl lg:text-9xl">
 					<span>{t("hero.title.main")}</span>
-					<span class="rotator relative inline-flex h-20 w-full justify-center md:h-24 lg:h-32">
-						<span>{t("hero.title.1")}</span><span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
+					<span class="rotator relative inline-flex h-20 w-full justify-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl md:h-24 lg:h-32">
+						<span>{t("hero.title.2")}</span><span>{t("hero.title.3")}</span><span>
 							{t("hero.title.4")}
-						</span><span>{t("hero.title.1")}</span>
+						</span><span>{t("hero.title.2")}</span>
 					</span>
 				</h1>
 			</div>
 			<div class="flex flex-col items-center gap-5 text-center lg:gap-10">
 				<p class="mt-8 max-w-3xl font-mono lg:text-lg">
 					{t("hero.subtitle")}
+				</p>
+				<p class="max-w-2xl font-mono text-base">
+					{t("hero.cta")}
 				</p>
 				<div class="flex flex-col items-center justify-center gap-3 lg:col-start-1">
 					<div class="squircle-bg rounded-lg bg-zinc-900" data-cursor-hover data-cursor-parallax>
