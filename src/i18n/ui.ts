@@ -24,7 +24,7 @@ export const ui = {
 		"hero.title.3": "historias",
 		"hero.title.4": "recuerdos",
 		"hero.subtitle":
-			"Diseñamos audioguías y productos turísticos digitales personalizados que conectan a cada persona con la esencia y la historia de tu destino de forma accesible y memorable, transformando su visita.",
+			"Diseñamos audioguías y productos turísticos digitales personalizados. Conectamos a cada persona con la esencia de tu destino de forma accesible y memorable, transformando su visita.",
 		"hero.cta": "Solicita una consulta.",
 		"hero.scroll": "continúa para explorar más",
 		"websites.title": "Audioguías Digitales",
@@ -122,7 +122,7 @@ export const ui = {
 		"hero.title.3": "stories",
 		"hero.title.4": "memories",
 		"hero.subtitle":
-			"We design personalized digital audio guides and tourism products that connect each person with the essence and history of your destination in an accessible and memorable way, transforming their visit.",
+			"We design personalized digital audio guides and tourism products. We connect each person with the essence of your destination in an accessible and memorable way, transforming their visit.",
 		"hero.cta": "Request a consultation.",
 		"hero.scroll": "continue to explore more",
 		"websites.title": "Digital Audio Guides",

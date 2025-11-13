@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import advertisingSvg from "@assets/images/services/advertising.svg?raw";
-import designSvg from "@assets/images/services/creative-designer-doing-multitasking.svg?raw";
-import mobileSvg from "@assets/images/services/mobile-app-ui-ux-design.svg?raw";
-import seoSvg from "@assets/images/services/seo-link-building.svg?raw";
-import websiteSvg from "@assets/images/services/website-ui-ux-development.svg?raw";
+import audioguiasImg from "@assets/images/services/audioguias-digitales.png";
+import materialAudiovisualImg from "@assets/images/services/material-audiovisual.png";
+import adaptacionesImg from "@assets/images/services/adaptaciones-accesibilidad.png";
+import traduccionImg from "@assets/images/services/traduccion-idiomas.png";
+import portalWebImg from "@assets/images/services/portal-web.png";
 import { getLangFromUrl, useTranslations, useTranslatedPath } from "@i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -17,27 +17,27 @@ const points = [
 	{
 		title: t("websites.title"),
 		content: t("websites.content"),
-		image: websiteSvg,
+		image: audioguiasImg,
 	},
 	{
 		title: t("apps.title"),
 		content: t("apps.content"),
-		image: mobileSvg,
+		image: materialAudiovisualImg,
 	},
 	{
 		title: t("uiux.title"),
 		content: t("uiux.content"),
-		image: designSvg,
+		image: adaptacionesImg,
 	},
 	{
 		title: t("seo.title"),
 		content: t("seo.content"),
-		image: seoSvg,
+		image: traduccionImg,
 	},
 	{
 		title: t("advertising.title"),
 		content: t("advertising.content"),
-		image: advertisingSvg,
+		image: portalWebImg,
 	},
 ];
 ---
@@ -51,8 +51,19 @@ const points = [
 		{
 			points.map(({ title, content, image }) => (
 				<div class="point flex h-screen w-full flex-col items-center justify-center gap-x-20 gap-y-12 p-16 pr-0 md:flex-row lg:gap-x-40">
-					<div class="hidden w-full max-w-80 lg:block">
-						<Fragment set:html={image} class="" />
+					<div class="service-image hidden w-full max-w-80 lg:block">
+						<Image
+							src={image}
+							alt={title}
+							width={400}
+							height={400}
+							loading="lazy"
+							format="webp"
+							quality={85}
+							widths={[240, 320, 400]}
+							sizes="(max-width: 1024px) 240px, (max-width: 1280px) 320px, 400px"
+							class="h-auto w-full object-contain"
+						/>
 					</div>
 					<article class="flex flex-col gap-14">
 						<h3 class="faq font-display text-4xl uppercase md:text-5xl lg:text-6xl">{title}</h3>
@@ -118,13 +129,13 @@ const points = [
 
 			// https://codepen.io/zank/pen/oNVjYMM?editors=0010
 			tl.to(indicators[i], { backgroundColor: "#9DD3CA", duration: 0.25 }, i);
-			tl.from((elem as HTMLElement).querySelector("svg"), { autoAlpha: 0 }, i);
+			tl.from((elem as HTMLElement).querySelector(".service-image"), { autoAlpha: 0 }, i);
 			tl.from((elem as HTMLElement).querySelector("article"), { autoAlpha: 0, translateY: 100 }, i);
 
 			if (i != points.length - 1) {
 				tl.to(indicators[i], { backgroundColor: "rgba(255,255,255,0.2)", duration: 0.25 }, i + 0.75);
 				tl.to((elem as HTMLElement).querySelector("article"), { autoAlpha: 0, translateY: -100 }, i + 0.75);
-				tl.to((elem as HTMLElement).querySelector("svg"), { autoAlpha: 0 }, i + 0.75);
+				tl.to((elem as HTMLElement).querySelector(".service-image"), { autoAlpha: 0 }, i + 0.75);
 			}
 		});
 	}

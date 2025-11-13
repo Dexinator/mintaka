@@ -3,7 +3,8 @@
     "allow": [
       "Bash(docker-compose:*)",
       "WebSearch",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
