@@ -68,7 +68,15 @@ const translatePath = useTranslatedPath(lang);
 		margin: 0;
 		position: relative;
 		overflow: hidden;
-		visibility: hidden;
+		/* Remove visibility hidden but keep low opacity initially */
+		opacity: 0;
+		animation: quickFadeIn 0.2s ease-out forwards;
+	}
+
+	@keyframes quickFadeIn {
+		to {
+			opacity: 1;
+		}
 	}
 	.hero h1 > div {
 		position: relative;
@@ -86,6 +94,8 @@ const translatePath = useTranslatedPath(lang);
 		z-index: 1; /* Lower z-index than gradient text */
 		overflow: hidden !important; /* Clip overflowing text during animation */
 		position: relative; /* Ensure z-index context */
+		/* Hide initially to prevent flash */
+		opacity: 0;
 	}
 
 	.rotator > span {
@@ -109,74 +119,101 @@ const translatePath = useTranslatedPath(lang);
 		position: relative;
 		z-index: 10; /* Higher z-index to stay above rotator */
 		will-change: transform;
+		/* Hide initially to prevent flash */
+		opacity: 0;
+		transform: translateY(20px);
 	}
 </style>
 
 <script>
 	import { gsap } from "gsap";
-	import { ScrollTrigger } from "gsap/ScrollTrigger";
-	import { SplitText } from "gsap/SplitText";
 	import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
-	gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin);
+	gsap.registerPlugin(ScrollToPlugin);
 
 	function init() {
-		// Create a wrapper for the gradient text to preserve it
-		const gradientSpan = document.querySelector('.hero-gradient-text');
-		if (gradientSpan) {
-			// Wrap the gradient text in a div to protect it from SplitText
-			const wrapper = document.createElement('div');
-			wrapper.style.display = 'inline-block';
-			wrapper.style.position = 'relative';
-			wrapper.style.zIndex = '10'; // Ensure wrapper also has higher z-index
-			wrapper.appendChild(gradientSpan.cloneNode(true));
-			gradientSpan.parentNode.replaceChild(wrapper, gradientSpan);
+		// Make h1 visible
+		gsap.set(".hero h1", {
+			opacity: 1
+		});
+
+		// Animate gradient text smoothly from CSS initial state
+		gsap.to(".hero-gradient-text", {
+			duration: 1,
+			y: 0,
+			opacity: 1,
+			ease: "power3.out",
+			delay: 0.05
+		});
+
+		// Setup rotator initial state and make visible
+		const rotator = document.querySelector(".hero .rotator");
+		const words = document.querySelectorAll(".hero .rotator > span");
+		if (words.length > 0) {
+			// Set initial state for all words
+			gsap.set(words[0], { opacity: 1, yPercent: 0 });
+			for (let i = 1; i < words.length; i++) {
+				gsap.set(words[i], { opacity: 0, yPercent: 100 });
+			}
+			// Make rotator visible with fade
+			gsap.to(rotator, {
+				opacity: 1,
+				duration: 0.8,
+				delay: 0.3,
+				ease: "power2.out"
+			});
 		}
 
-		// Only split the rotator text, not the gradient text
-		const rotatorElement = document.querySelector(".hero .rotator");
-		const h1Element = document.querySelector(".hero h1");
+		// Setup rotator animation after initial content loads
+		setTimeout(() => {
+			if (words.length === 0) return;
 
-		// Animate the gradient text separately
-		gsap.timeline()
-			.from(".hero-gradient-text", {
-				duration: 1.5,
-				yPercent: 100,
-				opacity: 0,
-				ease: "power4",
-			})
-			.set(".hero h1", { visibility: "visible" }, 0)
-			.then(() => {
-				const words = document.querySelectorAll(".hero .rotator > span");
+			let rotatorTimeline = gsap.timeline({ repeat: -1 });
+			rotatorTimeline.timeScale(0.5);
 
-				let rotatorTimeline = gsap.timeline({ repeat: -1 });
-				rotatorTimeline.timeScale(0.5);
+			for (let i = 0; i < words.length; i++) {
+				let delay = i - 1;
+				let wordTL = gsap.timeline();
 
-				for (let i = 0; i < words.length; i++) {
-					let delay = i - 1;
-					let wordTL = gsap.timeline();
-					if (i !== 0) {
-						gsap.set(words[i], { opacity: 1 });
-						wordTL.from(words[i], { duration: 1, yPercent: 100, opacity: 0, ease: "power4.out" });
-					} else {
-						// Handle the first one specially
-						delay += 1;
-						gsap.set(words[0], { opacity: 1, yPercent: 0 });
-					}
-
-					if (i !== words.length - 1) {
-						wordTL.to(words[i], { duration: 1, yPercent: -100, opacity: 0, ease: "power4.out" });
-					}
-					rotatorTimeline.add(wordTL, delay);
+				if (i !== 0) {
+					// Animate in from bottom
+					wordTL.to(words[i], {
+						duration: 1,
+						yPercent: 0,
+						opacity: 1,
+						ease: "power4.out"
+					});
+				} else {
+					// First word is already visible, just needs to exit
+					delay += 1;
 				}
-			});
 
+				if (i !== words.length - 1) {
+					// Animate out to top
+					wordTL.to(words[i], {
+						duration: 1,
+						yPercent: -100,
+						opacity: 0,
+						ease: "power4.out"
+					});
+				}
+				rotatorTimeline.add(wordTL, delay);
+			}
+		}, 800); // Start rotator after initial animation
+
+		// Smooth scroll to services
 		var goProjectsButton = document.getElementById("go-projects-button");
 		goProjectsButton?.addEventListener("click", function () {
 			gsap.to(window, { duration: 0.5, scrollTo: "#services" });
 		});
 	}
 
-	document.removeEventListener("DOMContentLoaded", init); // astro:page-load
-	document.addEventListener("DOMContentLoaded", init); // astro:page-load
+	// Use requestAnimationFrame for better performance
+	document.removeEventListener("DOMContentLoaded", init);
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init);
+	} else {
+		requestAnimationFrame(init);
+	}
 </script>
