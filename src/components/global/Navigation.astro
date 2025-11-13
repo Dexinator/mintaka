@@ -53,6 +53,7 @@ const { pathname } = Astro.url;
 			<div class="mx-auto w-full">
 				<div
 					class="shadow-thick resizable nav-container squircle relative mx-auto flex w-full flex-col justify-center overflow-x-hidden backdrop-blur-xl backdrop-filter md:flex-row-reverse">
+					<div class="nav-background"></div>
 					<div class="flex flex-row items-center justify-end md:hidden">
 						<a class="px-3 py-[0.4rem] pl-4" href={translatePath("/contact/")} aria-label="Contact Page">
 							<Icon class="icon-mail text-white" name="octicon:mail-16" width="20" data-xbind.class="{'hidden': open}" />
@@ -125,17 +126,6 @@ const { pathname } = Astro.url;
 </header>
 
 <style>
-	/* Mix-blend-mode para efectos visuales dinámicos */
-	.navigation {
-		mix-blend-mode: difference;
-		transition: all 0.5s ease;
-	}
-
-	/* Desactivar mix-blend-mode cuando el menú móvil está abierto */
-	.navigation.navbar-open {
-		mix-blend-mode: normal;
-	}
-
 	.navigation,
 	.logo {
 		padding: 1rem var(--base-padding-x);
@@ -147,38 +137,50 @@ const { pathname } = Astro.url;
 		}
 	}
 
-	/* Nav container con mix-blend-mode activo */
+	/* Nav container sin mix-blend-mode */
 	.nav-container {
-		transition: background-color 0.5s ease, border-color 0.5s ease;
+		transition: all 0.5s ease;
 		position: relative;
+		/* Sin color de fondo, será aplicado al pseudo-elemento */
+		background: none;
+		isolation: isolate; /* Crear nuevo contexto de apilamiento */
 	}
 
-	/*
-	 * Para lograr los colores deseados con mix-blend-mode: difference
-	 * Necesitamos usar colores complementarios/invertidos
-	 */
-
-	/* Light background sections (default - Hero, Team, FAQ) */
-	/* Para obtener blanco con morado en difference, usamos un color cercano al inverso */
-	.nav-container {
-		background-color: rgb(0, 0, 0) !important; /* Negro produce blanco en difference sobre fondos claros */
-		border: 2px solid rgba(71, 68, 150, 0.2);
+	/* Pseudo-elemento para el fondo con mix-blend-mode */
+	.nav-background {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		border-radius: inherit;
+		/* Fondo transparente con blur */
+		background-color: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		/* Solo el fondo tiene mix-blend-mode */
+		mix-blend-mode: difference;
+		transition: all 0.5s ease;
 	}
 
-	/* Dark background sections (Services, Tagline - purple #474496) */
-	/* Para obtener el morado deseado, usamos su complementario */
-	.navigation.on-dark .nav-container {
-		background-color: rgb(184, 187, 105) !important; /* Complementario del morado para producir el morado original */
-		border: 2px solid rgba(157, 211, 202, 0.2);
+	/* En secciones oscuras, ajustar transparencia del fondo */
+	.navigation.on-dark .nav-background {
+		background-color: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
 	/* Estado colapsado */
-	.navigation.collapsed .nav-container {
-		background-color: rgba(0, 0, 0, 0.95) !important;
+	.navigation.collapsed .nav-background {
+		background-color: rgba(255, 255, 255, 0.15);
 	}
 
-	.navigation.on-dark.collapsed .nav-container {
-		background-color: rgba(184, 187, 105, 0.95) !important;
+	.navigation.on-dark.collapsed .nav-background {
+		background-color: rgba(255, 255, 255, 0.08);
+	}
+
+	/* Desactivar mix-blend cuando el menú móvil está abierto */
+	.navigation.navbar-open .nav-background {
+		mix-blend-mode: normal;
+		background-color: rgba(255, 255, 255, 0.95);
 	}
 
 	.resizable:before {
@@ -197,78 +199,52 @@ const { pathname } = Astro.url;
 		opacity: 1;
 	}
 
-	/* Menu items */
+	/* Menu items - ahora sin inversión de colores */
 	nav a .menu-item-container {
 		border-radius: 0.45rem;
 		transition: background-color 0.3s ease;
 		position: relative;
-		isolation: isolate; /* Aislar el mix-blend-mode */
 	}
 
 	nav a .menu-item {
 		transition: color 0.3s ease;
-		/* El texto necesita colores invertidos para verse correctamente con difference */
-		color: rgb(184, 187, 105); /* Produce color morado #474496 tras difference */
 		font-weight: 600;
+		/* Colores normales ya que no hay mix-blend-mode en el contenido */
+		color: #474496; /* Morado de la marca */
 	}
 
-	/* En secciones oscuras */
+	/* En secciones oscuras - texto blanco */
 	.navigation.on-dark nav a .menu-item {
-		color: rgb(255, 255, 255); /* Blanco produce negro/oscuro tras difference en fondos oscuros */
+		color: #ffffff;
 	}
 
-	/* Hover states - desactivamos mix-blend localmente */
+	/* Hover states */
 	nav ul:not(.collapsed) a:hover .menu-item-container {
-		background: #9DD3CA; /* Verde agua de la marca */
-		position: relative;
-		z-index: 1;
-	}
-
-	nav ul:not(.collapsed) a:hover .menu-item-container::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: #9DD3CA;
-		border-radius: 0.45rem;
-		mix-blend-mode: normal;
-		z-index: -1;
+		background: #9DD3CA; /* Verde agua */
 	}
 
 	nav ul:not(.collapsed) a:hover .menu-item {
-		color: #474496; /* Morado de la marca */
-		mix-blend-mode: normal;
-		position: relative;
-		z-index: 2;
+		color: #474496; /* Morado */
 	}
 
-	/* Active states */
+	/* Active states - Verde agua #9DD3CA */
 	nav ul:not(.collapsed) a.active .menu-item-container {
-		background: #9DD3CA;
-		position: relative;
-		z-index: 1;
-	}
-
-	nav ul:not(.collapsed) a.active .menu-item-container::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: #9DD3CA;
-		border-radius: 0.45rem;
-		mix-blend-mode: normal;
-		z-index: -1;
+		background: #9DD3CA; /* Verde agua como querías */
 	}
 
 	nav ul:not(.collapsed) a.active .menu-item {
-		color: #474496;
-		mix-blend-mode: normal;
-		position: relative;
-		z-index: 2;
+		color: #474496; /* Morado sobre verde agua */
 	}
 
-	/* Secciones oscuras - hover y active */
+	/* En secciones oscuras - mantener consistencia */
+	.navigation.on-dark nav ul:not(.collapsed) a:hover .menu-item-container,
+	.navigation.on-dark nav ul:not(.collapsed) a.active .menu-item-container {
+		background: #9DD3CA; /* Verde agua consistente */
+	}
+
 	.navigation.on-dark nav ul:not(.collapsed) a:hover .menu-item,
 	.navigation.on-dark nav ul:not(.collapsed) a.active .menu-item {
-		color: #474496; /* Mantener morado */
+		color: #474496; /* Morado consistente */
 	}
 
 	/* Collapsed menu states */
@@ -280,27 +256,26 @@ const { pathname } = Astro.url;
 
 	/* Mobile menu icon color */
 	.navigation button {
-		color: rgb(184, 187, 105); /* Produce morado tras difference */
+		color: #474496; /* Morado de la marca */
 		transition: color 0.3s ease;
 	}
 
 	.navigation.on-dark button {
-		color: white;
+		color: #ffffff; /* Blanco en secciones oscuras */
 	}
 
 	.navigation button:hover {
 		color: #9DD3CA;
-		mix-blend-mode: normal;
 	}
 
 	/* Mobile mail icon */
 	.navigation .icon-mail {
-		color: rgb(184, 187, 105); /* Produce morado tras difference */
+		color: #474496; /* Morado de la marca */
 		transition: color 0.3s ease;
 	}
 
 	.navigation.on-dark .icon-mail {
-		color: white !important;
+		color: #ffffff !important;
 	}
 
 	/* Fallback sin mix-blend-mode para navegadores que no lo soporten */
@@ -368,23 +343,17 @@ const { pathname } = Astro.url;
 			}
 		});
 
-		// Navigation color change for dark sections (purple backgrounds)
-		// El mix-blend-mode creará el efecto visual dinámicamente
-		// Agregamos la clase on-dark para ajustar los colores base
-
+		// Navigation color change for dark sections (Services y Tagline tienen fondo morado)
+		// Cambiar colores cuando entramos a la sección de Services
 		ScrollTrigger.create({
 			trigger: ".services-section",
-			start: "top 100px", // Un poco después del top para una transición más suave
+			start: "top 80px", // Justo cuando el nav está sobre la sección
 			endTrigger: ".team-section",
-			end: "top 100px",
+			end: "top 80px", // Termina cuando llega a Team (fondo claro)
 			toggleClass: { targets: ".navigation", className: "on-dark" },
-			markers: false,
-			onEnter: () => {
-				// Opcional: puedes agregar efectos adicionales aquí
-				console.log("Entrando a sección oscura");
-			},
-			onLeaveBack: () => {
-				console.log("Saliendo de sección oscura");
+			markers: false, // Cambiar a true para debug
+			onToggle: (self) => {
+				console.log("Navigation on-dark:", self.isActive);
 			}
 		});
 
