@@ -50,8 +50,8 @@ const points = [
 		</div>
 		{
 			points.map(({ title, content, image }) => (
-				<div class="point flex h-screen w-full flex-col items-center justify-center gap-x-20 gap-y-12 p-16 pr-0 md:flex-row lg:gap-x-40">
-					<div class="service-image hidden w-full max-w-80 lg:block">
+				<div class="point flex h-screen w-full flex-col items-center justify-center gap-x-20 gap-y-8 px-6 py-12 md:flex-row md:gap-y-12 md:p-16 md:pr-0 lg:gap-x-40">
+					<div class="service-image w-full max-w-40 md:max-w-60 lg:max-w-80">
 						<Image
 							src={image}
 							alt={title}
@@ -79,10 +79,14 @@ const points = [
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 	import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+	import { getPreferences } from "@/stores/accessibilityStore";
 
 	gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin);
 
 	function init() {
+		const prefs = getPreferences();
+		const reducedMotion = prefs.reducedMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 		var points = gsap.utils.toArray(".point") as gsap.DOMTarget[];
 		var indicators = gsap.utils.toArray(".indicator") as gsap.DOMTarget[];
 
@@ -90,6 +94,34 @@ const points = [
 
 		gsap.set(".indicators", { display: "flex" });
 
+		// If reduced motion, skip all animations and show all services statically
+		if (reducedMotion) {
+			// Remove h-screen from wrapper to allow natural stacking
+			const wrapper = document.querySelector(".services-section .wrapper") as HTMLElement;
+			if (wrapper) {
+				wrapper.style.height = "auto";
+				wrapper.style.minHeight = "100vh";
+			}
+
+			// Make all points visible and positioned statically
+			points.forEach(function (elem, i) {
+				const element = elem as HTMLElement;
+				element.style.position = "relative";
+				element.style.height = "auto";
+				element.style.minHeight = "60vh";
+				element.style.paddingTop = "4rem";
+				element.style.paddingBottom = "4rem";
+
+				gsap.set(elem, { autoAlpha: 1 });
+				gsap.set(element.querySelector(".service-image"), { autoAlpha: 1 });
+				gsap.set(element.querySelector("article"), { autoAlpha: 1, translateY: 0 });
+				// Highlight all indicators
+				gsap.set(indicators[i], { backgroundColor: "#9DD3CA" });
+			});
+			return; // Skip the rest of the animation setup
+		}
+
+		// Normal animation behavior
 		var tl = gsap.timeline({
 			duration: points.length,
 			scrollTrigger: {
@@ -114,7 +146,7 @@ const points = [
 				id: "pinning",
 				markers: false,
 				snap: {
-					snapTo: [0, 0.25, 0.5, 0.7, 0.9], // snap to the closest label in the timeline
+					snapTo: [0, 0.25, 0.5, 0.75, 1], // snap to the closest label in the timeline
 					duration: { min: 0.1, max: 0.1 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)
 					delay: 1, // wait 1 seconds from the last scroll event before doing the snapping
 					inertia: false,

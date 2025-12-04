@@ -1,0 +1,566 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<!-- Accessibility control panel -->
+<aside id="accessibility-panel" class="accessibility-panel" role="dialog" aria-labelledby="accessibility-title" aria-modal="false">
+	<div class="accessibility-panel-content">
+		<!-- Header -->
+		<header class="accessibility-panel-header">
+			<h2 id="accessibility-title" class="accessibility-panel-title">{t("accessibility.panel.title")}</h2>
+			<p class="accessibility-panel-description">{t("accessibility.panel.description")}</p>
+		</header>
+
+		<!-- Controls -->
+		<div class="accessibility-controls">
+			<!-- Font Size Control -->
+			<div class="accessibility-control-group">
+				<div class="accessibility-control-header">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M4 7V4h16v3"></path>
+						<path d="M9 20h6"></path>
+						<path d="M12 4v16"></path>
+					</svg>
+					<div>
+						<h3 class="accessibility-control-title">{t("accessibility.font.title")}</h3>
+						<p class="accessibility-control-desc">{t("accessibility.font.description")}</p>
+					</div>
+				</div>
+				<div class="accessibility-control-actions">
+					<button
+						type="button"
+						id="font-decrease"
+						class="accessibility-btn"
+						aria-label={t("accessibility.font.decrease")}
+						data-action="font-decrease"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<line x1="5" y1="12" x2="19" y2="12"></line>
+						</svg>
+						A−
+					</button>
+					<span id="font-size-display" class="font-size-display" aria-live="polite">100%</span>
+					<button
+						type="button"
+						id="font-increase"
+						class="accessibility-btn"
+						aria-label={t("accessibility.font.increase")}
+						data-action="font-increase"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<line x1="12" y1="5" x2="12" y2="19"></line>
+							<line x1="5" y1="12" x2="19" y2="12"></line>
+						</svg>
+						A+
+					</button>
+				</div>
+			</div>
+
+			<!-- High Contrast Toggle -->
+			<div class="accessibility-control-group">
+				<div class="accessibility-control-header">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<circle cx="12" cy="12" r="10"></circle>
+						<path d="M12 2v20"></path>
+					</svg>
+					<div>
+						<h3 class="accessibility-control-title">{t("accessibility.contrast.title")}</h3>
+						<p class="accessibility-control-desc">{t("accessibility.contrast.description")}</p>
+					</div>
+				</div>
+				<button
+					type="button"
+					id="contrast-toggle"
+					class="accessibility-toggle"
+					role="switch"
+					aria-checked="false"
+					aria-label={t("accessibility.contrast.toggle")}
+					data-action="contrast-toggle"
+				>
+					<span class="accessibility-toggle-track">
+						<span class="accessibility-toggle-thumb"></span>
+					</span>
+					<span id="contrast-status" class="accessibility-toggle-label">{t("accessibility.contrast.off")}</span>
+				</button>
+			</div>
+
+			<!-- Reduced Motion Toggle -->
+			<div class="accessibility-control-group">
+				<div class="accessibility-control-header">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<circle cx="12" cy="12" r="10"></circle>
+						<path d="M10 15l5-5"></path>
+						<circle cx="12" cy="12" r="3"></circle>
+					</svg>
+					<div>
+						<h3 class="accessibility-control-title">{t("accessibility.motion.title")}</h3>
+						<p class="accessibility-control-desc">{t("accessibility.motion.description")}</p>
+					</div>
+				</div>
+				<button
+					type="button"
+					id="motion-toggle"
+					class="accessibility-toggle"
+					role="switch"
+					aria-checked="false"
+					aria-label={t("accessibility.motion.toggle")}
+					data-action="motion-toggle"
+				>
+					<span class="accessibility-toggle-track">
+						<span class="accessibility-toggle-thumb"></span>
+					</span>
+					<span id="motion-status" class="accessibility-toggle-label">{t("accessibility.motion.off")}</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="accessibility-panel-footer">
+			<button type="button" id="reset-accessibility" class="accessibility-reset-btn" data-action="reset">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+					<path d="M21 3v5h-5"></path>
+					<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+					<path d="M3 21v-5h5"></path>
+				</svg>
+				{t("accessibility.reset")}
+			</button>
+		</footer>
+	</div>
+</aside>
+
+<style>
+	.accessibility-panel {
+		position: fixed;
+		bottom: 6rem;
+		right: 2rem;
+		z-index: 999;
+		width: 380px;
+		max-width: calc(100vw - 2rem);
+		max-height: calc(100vh - 8rem);
+		overflow-y: auto;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		border-radius: 1rem;
+		box-shadow:
+			0 20px 25px -5px rgba(0, 0, 0, 0.1),
+			0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(20px) scale(0.95);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		border: 1px solid rgba(0, 0, 0, 0.05);
+	}
+
+	.accessibility-panel.visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0) scale(1);
+	}
+
+	.accessibility-panel-content {
+		padding: 1.5rem;
+	}
+
+	.accessibility-panel-header {
+		margin-bottom: 1.5rem;
+		padding-bottom: 1rem;
+		border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.accessibility-panel-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #474496;
+		margin: 0 0 0.5rem 0;
+	}
+
+	.accessibility-panel-description {
+		font-size: 0.875rem;
+		color: #6b7280;
+		margin: 0;
+	}
+
+	.accessibility-controls {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.accessibility-control-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.accessibility-control-header {
+		display: flex;
+		gap: 0.75rem;
+		align-items: start;
+	}
+
+	.accessibility-control-header svg {
+		flex-shrink: 0;
+		color: #9dd3ca;
+		margin-top: 0.125rem;
+	}
+
+	.accessibility-control-title {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #1f2937;
+		margin: 0 0 0.25rem 0;
+	}
+
+	.accessibility-control-desc {
+		font-size: 0.8125rem;
+		color: #6b7280;
+		margin: 0;
+	}
+
+	.accessibility-control-actions {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding-left: 2rem;
+	}
+
+	.accessibility-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.25rem;
+		padding: 0.5rem 1rem;
+		background: #f3f4f6;
+		border: 1px solid #d1d5db;
+		border-radius: 0.5rem;
+		color: #1f2937;
+		font-weight: 600;
+		font-size: 0.875rem;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.accessibility-btn:hover {
+		background: #e5e7eb;
+		border-color: #9ca3af;
+	}
+
+	.accessibility-btn:focus-visible {
+		outline: 3px solid #9dd3ca;
+		outline-offset: 2px;
+	}
+
+	.accessibility-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.font-size-display {
+		font-weight: 700;
+		color: #474496;
+		min-width: 50px;
+		text-align: center;
+	}
+
+	.accessibility-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.5rem 0.75rem;
+		background: transparent;
+		border: 1px solid #d1d5db;
+		border-radius: 0.5rem;
+		cursor: pointer;
+		transition: all 0.2s;
+		width: 100%;
+		margin-left: 2rem;
+	}
+
+	.accessibility-toggle:hover {
+		background: #f9fafb;
+		border-color: #9ca3af;
+	}
+
+	.accessibility-toggle:focus-visible {
+		outline: 3px solid #9dd3ca;
+		outline-offset: 2px;
+	}
+
+	.accessibility-toggle-track {
+		position: relative;
+		display: block;
+		width: 44px;
+		height: 24px;
+		background: #d1d5db;
+		border-radius: 12px;
+		transition: background-color 0.2s;
+		flex-shrink: 0;
+	}
+
+	.accessibility-toggle[aria-checked="true"] .accessibility-toggle-track {
+		background: #9dd3ca;
+	}
+
+	.accessibility-toggle-thumb {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 20px;
+		height: 20px;
+		background: white;
+		border-radius: 50%;
+		transition: transform 0.2s;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	.accessibility-toggle[aria-checked="true"] .accessibility-toggle-thumb {
+		transform: translateX(20px);
+	}
+
+	.accessibility-toggle-label {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: #6b7280;
+		flex: 1;
+		text-align: left;
+	}
+
+	.accessibility-toggle[aria-checked="true"] .accessibility-toggle-label {
+		color: #1f2937;
+	}
+
+	.accessibility-panel-footer {
+		margin-top: 1.5rem;
+		padding-top: 1rem;
+		border-top: 2px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.accessibility-reset-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.75rem;
+		background: transparent;
+		border: 2px dashed #d1d5db;
+		border-radius: 0.5rem;
+		color: #6b7280;
+		font-weight: 600;
+		font-size: 0.875rem;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.accessibility-reset-btn:hover {
+		background: #fef2f2;
+		border-color: #ef4444;
+		color: #ef4444;
+	}
+
+	.accessibility-reset-btn:focus-visible {
+		outline: 3px solid #9dd3ca;
+		outline-offset: 2px;
+	}
+
+	/* High contrast mode adjustments */
+	.high-contrast .accessibility-panel {
+		background: #ffffff;
+		border: 3px solid #000000;
+	}
+
+	.high-contrast .accessibility-panel-title,
+	.high-contrast .accessibility-control-title {
+		color: #000000;
+	}
+
+	.high-contrast .accessibility-btn,
+	.high-contrast .accessibility-toggle {
+		border-color: #000000;
+		border-width: 2px;
+	}
+
+	/* Reduced motion */
+	.reduced-motion .accessibility-panel {
+		transition: none;
+	}
+
+	/* Mobile adjustments */
+	@media (max-width: 768px) {
+		.accessibility-panel {
+			bottom: 5rem;
+			right: 1rem;
+			left: 1rem;
+			width: auto;
+			max-width: none;
+		}
+
+		.accessibility-control-actions,
+		.accessibility-toggle {
+			padding-left: 0;
+			margin-left: 0;
+		}
+	}
+</style>
+
+<script>
+	import {
+		getPreferences,
+		adjustFontSize,
+		toggleContrast,
+		toggleMotion,
+		resetPreferences,
+		ACCESSIBILITY_CHANGE_EVENT,
+	} from "@/stores/accessibilityStore";
+	import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+	const lang = getLangFromUrl(new URL(window.location.href));
+	const t = useTranslations(lang);
+
+	function initAccessibilityPanel() {
+		const fontDecrease = document.getElementById("font-decrease");
+		const fontIncrease = document.getElementById("font-increase");
+		const fontSizeDisplay = document.getElementById("font-size-display");
+		const contrastToggle = document.getElementById("contrast-toggle");
+		const contrastStatus = document.getElementById("contrast-status");
+		const motionToggle = document.getElementById("motion-toggle");
+		const motionStatus = document.getElementById("motion-status");
+		const resetButton = document.getElementById("reset-accessibility");
+
+		if (!fontDecrease || !fontIncrease || !fontSizeDisplay) return;
+		if (!contrastToggle || !contrastStatus) return;
+		if (!motionToggle || !motionStatus) return;
+		if (!resetButton) return;
+
+		// Update UI based on current preferences
+		function updateUI() {
+			const prefs = getPreferences();
+
+			// Font size
+			fontSizeDisplay.textContent = `${prefs.fontSize}%`;
+			fontDecrease.disabled = prefs.fontSize === 100;
+			fontIncrease.disabled = prefs.fontSize === 150;
+
+			// High contrast
+			contrastToggle.setAttribute("aria-checked", prefs.highContrast.toString());
+			contrastStatus.textContent = prefs.highContrast
+				? t("accessibility.contrast.on")
+				: t("accessibility.contrast.off");
+
+			// Reduced motion
+			motionToggle.setAttribute("aria-checked", prefs.reducedMotion.toString());
+			motionStatus.textContent = prefs.reducedMotion ? t("accessibility.motion.on") : t("accessibility.motion.off");
+		}
+
+		// Event handlers
+		fontDecrease.addEventListener("click", () => {
+			adjustFontSize("decrease");
+		});
+
+		fontIncrease.addEventListener("click", () => {
+			adjustFontSize("increase");
+		});
+
+		contrastToggle.addEventListener("click", () => {
+			toggleContrast();
+		});
+
+		motionToggle.addEventListener("click", () => {
+			toggleMotion();
+			// Reload page to reinitialize GSAP animations with new setting
+			setTimeout(() => {
+				window.location.reload();
+			}, 100);
+		});
+
+		resetButton.addEventListener("click", () => {
+			resetPreferences();
+			// Show confirmation (optional)
+			const originalText = resetButton.textContent;
+			resetButton.textContent = `✓ ${t("accessibility.reset.confirm")}`;
+			setTimeout(() => {
+				resetButton.textContent = originalText;
+			}, 2000);
+		});
+
+		// Listen for preference changes
+		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateUI);
+
+		// Initial UI update
+		updateUI();
+	}
+
+	// Initialize on page load
+	initAccessibilityPanel();
+
+	// Re-initialize after view transitions
+	document.addEventListener("astro:after-swap", initAccessibilityPanel);
+</script>

@@ -128,22 +128,27 @@ const translatePath = useTranslatedPath(lang);
 <script>
 	import { gsap } from "gsap";
 	import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+	import { getPreferences } from "@/stores/accessibilityStore";
 
 	gsap.registerPlugin(ScrollToPlugin);
 
 	function init() {
+		const prefs = getPreferences();
+		const reducedMotion = prefs.reducedMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 		// Make h1 visible
 		gsap.set(".hero h1", {
 			opacity: 1
 		});
 
 		// Animate gradient text smoothly from CSS initial state
+		// If reduced motion, make it instant
 		gsap.to(".hero-gradient-text", {
-			duration: 1,
+			duration: reducedMotion ? 0 : 1,
 			y: 0,
 			opacity: 1,
-			ease: "power3.out",
-			delay: 0.05
+			ease: reducedMotion ? "none" : "power3.out",
+			delay: reducedMotion ? 0 : 0.05
 		});
 
 		// Setup rotator initial state and make visible
@@ -155,56 +160,65 @@ const translatePath = useTranslatedPath(lang);
 			for (let i = 1; i < words.length; i++) {
 				gsap.set(words[i], { opacity: 0, yPercent: 100 });
 			}
-			// Make rotator visible with fade
+			// Make rotator visible with fade (instant if reduced motion)
 			gsap.to(rotator, {
 				opacity: 1,
-				duration: 0.8,
-				delay: 0.3,
-				ease: "power2.out"
+				duration: reducedMotion ? 0 : 0.8,
+				delay: reducedMotion ? 0 : 0.3,
+				ease: reducedMotion ? "none" : "power2.out"
 			});
 		}
 
 		// Setup rotator animation after initial content loads
-		setTimeout(() => {
-			if (words.length === 0) return;
+		// Skip rotation animation if reduced motion is enabled
+		if (!reducedMotion) {
+			setTimeout(() => {
+				if (words.length === 0) return;
 
-			let rotatorTimeline = gsap.timeline({ repeat: -1 });
-			rotatorTimeline.timeScale(0.5);
+				let rotatorTimeline = gsap.timeline({ repeat: -1 });
+				rotatorTimeline.timeScale(0.5);
 
-			for (let i = 0; i < words.length; i++) {
-				let delay = i - 1;
-				let wordTL = gsap.timeline();
+				for (let i = 0; i < words.length; i++) {
+					let delay = i - 1;
+					let wordTL = gsap.timeline();
 
-				if (i !== 0) {
-					// Animate in from bottom
-					wordTL.to(words[i], {
-						duration: 1,
-						yPercent: 0,
-						opacity: 1,
-						ease: "power4.out"
-					});
-				} else {
-					// First word is already visible, just needs to exit
-					delay += 1;
+					if (i !== 0) {
+						// Animate in from bottom
+						wordTL.to(words[i], {
+							duration: 1,
+							yPercent: 0,
+							opacity: 1,
+							ease: "power4.out"
+						});
+					} else {
+						// First word is already visible, just needs to exit
+						delay += 1;
+					}
+
+					if (i !== words.length - 1) {
+						// Animate out to top
+						wordTL.to(words[i], {
+							duration: 1,
+							yPercent: -100,
+							opacity: 0,
+							ease: "power4.out"
+						});
+					}
+					rotatorTimeline.add(wordTL, delay);
 				}
+			}, 800); // Start rotator after initial animation
+		}
 
-				if (i !== words.length - 1) {
-					// Animate out to top
-					wordTL.to(words[i], {
-						duration: 1,
-						yPercent: -100,
-						opacity: 0,
-						ease: "power4.out"
-					});
-				}
-				rotatorTimeline.add(wordTL, delay);
-			}
-		}, 800); // Start rotator after initial animation
-
-		// Smooth scroll to services
+		// Smooth scroll to services (instant if reduced motion)
 		var goProjectsButton = document.getElementById("go-projects-button");
 		goProjectsButton?.addEventListener("click", function () {
-			gsap.to(window, { duration: 0.5, scrollTo: "#services" });
+			if (reducedMotion) {
+				// Instant scroll
+				window.location.hash = "services";
+			} else {
+				// Smooth scroll
+				gsap.to(window, { duration: 0.5, scrollTo: "#services" });
+			}
 		});
 	}
 

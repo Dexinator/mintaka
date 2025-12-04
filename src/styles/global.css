@@ -157,3 +157,156 @@ html {
 	background: #fff;
 	mask-image: paint(squircle);
 }
+
+/* ===================================
+   ACCESSIBILITY STYLES
+   =================================== */
+
+/* Font size scaling variable */
+:root {
+	--font-scale: 1;
+}
+
+/* Apply font scaling to body text elements ONLY when user adjusts it */
+html[data-font-size="125"] {
+	--font-scale: 1.25;
+	font-size: 125%;
+}
+
+html[data-font-size="150"] {
+	--font-scale: 1.5;
+	font-size: 150%;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+	--primary: #9DD3CA;
+	--secondary: #474496;
+	--text: #000000;
+	--background: #FFFFFF;
+	--border: #000000;
+}
+
+.high-contrast body {
+	background-color: var(--background) !important;
+	color: var(--text) !important;
+}
+
+.high-contrast a {
+	color: #0000EE !important;
+	text-decoration: underline;
+}
+
+.high-contrast a:visited {
+	color: #551A8B !important;
+}
+
+.high-contrast button,
+.high-contrast [role="button"] {
+	background-color: var(--text) !important;
+	color: var(--background) !important;
+	border: 2px solid var(--border) !important;
+}
+
+.high-contrast button:hover,
+.high-contrast [role="button"]:hover {
+	background-color: var(--background) !important;
+	color: var(--text) !important;
+}
+
+.high-contrast * {
+	border-color: var(--border) !important;
+}
+
+/* Override gradient backgrounds in high contrast */
+.high-contrast [style*="background"] {
+	background: var(--background) !important;
+}
+
+/* Reduced Motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+	scroll-behavior: auto !important;
+}
+
+/* Respect system preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Enhanced Focus Styles */
+*:focus {
+	outline: 2px solid transparent;
+}
+
+*:focus-visible {
+	outline: 3px solid #9DD3CA;
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+.high-contrast *:focus-visible {
+	outline: 3px solid #000000 !important;
+	outline-offset: 3px;
+}
+
+/* Skip Link */
+.skip-link {
+	position: absolute;
+	top: -100px;
+	left: 0;
+	z-index: 9999;
+	padding: 1rem 1.5rem;
+	background-color: #474496;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 600;
+	border-radius: 0 0 0.5rem 0;
+	transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+	top: 0;
+	outline: 3px solid #9DD3CA;
+	outline-offset: 2px;
+}
+
+.high-contrast .skip-link {
+	background-color: #000000;
+	color: #FFFFFF;
+	border: 2px solid #000000;
+}
+
+/* Screen reader only text */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+	position: static;
+	width: auto;
+	height: auto;
+	overflow: visible;
+	clip: auto;
+	white-space: normal;
+}

@@ -46,12 +46,25 @@ const translatePath = useTranslatedPath(lang);
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 	import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 	import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+	import { getPreferences } from "@/stores/accessibilityStore";
 
 	gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
 
 	function init() {
+		const prefs = getPreferences();
+		const reducedMotion = prefs.reducedMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 		const linePath = document.querySelector("#tagline-arrow-path");
 
+		// If reduced motion, show everything statically
+		if (reducedMotion) {
+			gsap.set(linePath, { drawSVG: "100%" });
+			gsap.set("#tagline-arrow", { opacity: 1 });
+			gsap.set("#services-tagline", { opacity: 1, y: 0 });
+			return;
+		}
+
+		// Normal animation behavior
 		gsap.set(linePath, { drawSVG: 0 });
 
 		let otherQTl = gsap

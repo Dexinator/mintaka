@@ -1,0 +1,227 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<!-- Accessibility floating button -->
+<button
+	id="accessibility-button"
+	type="button"
+	aria-label={t("accessibility.button")}
+	aria-expanded="false"
+	aria-controls="accessibility-panel"
+	class="accessibility-button"
+>
+	<!-- Accessibility icon -->
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="24"
+		height="24"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+	>
+		<circle cx="12" cy="12" r="10"></circle>
+		<circle cx="12" cy="8" r="1.5"></circle>
+		<path d="M8.5 10.5h7"></path>
+		<path d="M12 11v6"></path>
+		<path d="M9 16l3 2 3-2"></path>
+	</svg>
+
+	<!-- Badge showing number of active adjustments -->
+	<span id="accessibility-badge" class="accessibility-badge" aria-live="polite" aria-atomic="true">0</span>
+</button>
+
+<style>
+	.accessibility-button {
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		z-index: 998;
+		width: 56px;
+		height: 56px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #9dd3ca 0%, #474496 100%);
+		color: white;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		box-shadow:
+			0 4px 6px -1px rgba(0, 0, 0, 0.1),
+			0 2px 4px -1px rgba(0, 0, 0, 0.06);
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.accessibility-button:hover {
+		transform: scale(1.1);
+		box-shadow:
+			0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	}
+
+	.accessibility-button:focus-visible {
+		outline: 3px solid #9dd3ca;
+		outline-offset: 4px;
+	}
+
+	.accessibility-button[aria-expanded="true"] {
+		background: linear-gradient(135deg, #474496 0%, #9dd3ca 100%);
+	}
+
+	.accessibility-badge {
+		position: absolute;
+		top: -4px;
+		right: -4px;
+		min-width: 20px;
+		height: 20px;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		background-color: #ee7088;
+		color: white;
+		font-size: 11px;
+		font-weight: 700;
+		border-radius: 10px;
+		padding: 0 6px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	.accessibility-badge.visible {
+		display: flex;
+	}
+
+	/* High contrast mode adjustments */
+	.high-contrast .accessibility-button {
+		background: #000000;
+		border: 3px solid #ffffff;
+	}
+
+	.high-contrast .accessibility-button:hover {
+		background: #ffffff;
+		color: #000000;
+	}
+
+	/* Reduced motion */
+	.reduced-motion .accessibility-button {
+		transition: none;
+	}
+
+	.reduced-motion .accessibility-button:hover {
+		transform: none;
+	}
+
+	/* Mobile adjustments */
+	@media (max-width: 768px) {
+		.accessibility-button {
+			bottom: 1.5rem;
+			right: 1.5rem;
+			width: 52px;
+			height: 52px;
+		}
+	}
+
+	/* Touch device adjustments */
+	@media (hover: none) and (pointer: coarse) {
+		.accessibility-button {
+			width: 56px;
+			height: 56px;
+		}
+	}
+</style>
+
+<script>
+	import {
+		getPreferences,
+		getActiveAdjustmentsCount,
+		ACCESSIBILITY_CHANGE_EVENT,
+	} from "@/stores/accessibilityStore";
+
+	function initAccessibilityButton() {
+		const button = document.getElementById("accessibility-button");
+		const badge = document.getElementById("accessibility-badge");
+		if (!button || !badge) return;
+
+		// Update badge count
+		function updateBadge() {
+			const prefs = getPreferences();
+			const count = getActiveAdjustmentsCount(prefs);
+
+			badge.textContent = count.toString();
+			if (count > 0) {
+				badge.classList.add("visible");
+			} else {
+				badge.classList.remove("visible");
+			}
+		}
+
+		// Toggle panel visibility
+		function togglePanel() {
+			const panel = document.getElementById("accessibility-panel");
+			if (!panel) return;
+
+			const isExpanded = button.getAttribute("aria-expanded") === "true";
+			const newState = !isExpanded;
+
+			button.setAttribute("aria-expanded", newState.toString());
+			panel.classList.toggle("visible", newState);
+
+			// Focus first interactive element in panel when opening
+			if (newState) {
+				setTimeout(() => {
+					const firstButton = panel.querySelector("button");
+					firstButton?.focus();
+				}, 100);
+			}
+		}
+
+		// Event listeners
+		button.addEventListener("click", togglePanel);
+
+		// Listen for preference changes to update badge
+		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateBadge);
+
+		// Initial badge update
+		updateBadge();
+
+		// Close panel when clicking outside
+		document.addEventListener("click", (e) => {
+			const panel = document.getElementById("accessibility-panel");
+			if (!panel) return;
+
+			const target = e.target as Node;
+			if (
+				!button.contains(target) &&
+				!panel.contains(target) &&
+				button.getAttribute("aria-expanded") === "true"
+			) {
+				button.setAttribute("aria-expanded", "false");
+				panel.classList.remove("visible");
+			}
+		});
+
+		// Close panel with Escape key
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
+				button.setAttribute("aria-expanded", "false");
+				const panel = document.getElementById("accessibility-panel");
+				panel?.classList.remove("visible");
+				button.focus();
+			}
+		});
+	}
+
+	// Initialize on page load
+	initAccessibilityButton();
+
+	// Re-initialize after view transitions
+	document.addEventListener("astro:after-swap", initAccessibilityButton);
+</script>

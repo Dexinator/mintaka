@@ -234,10 +234,26 @@ const faqs = [
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
 	import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+	import { getPreferences } from "@/stores/accessibilityStore";
 
 	gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
 
 	function init() {
+		const prefs = getPreferences();
+		const reducedMotion = prefs.reducedMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		const linePath = document.querySelector("#faq-more-question-path");
+
+		// If reduced motion, show everything statically
+		if (reducedMotion) {
+			gsap.set("#faq", { "--faq-clip": "2vw", "--faq-radius": "5rem" });
+			gsap.set(linePath, { drawSVG: "100%" });
+			gsap.set(".faq-more-questions .other-question-title", { opacity: 1 });
+			gsap.set(".faq-contact-us-button", { opacity: 1 });
+			return;
+		}
+
+		// Normal animation behavior
 		gsap.to("#faq", {
 			scrollTrigger: {
 				trigger: "#faq",
@@ -249,8 +265,6 @@ const faqs = [
 			"--faq-clip": "2vw",
 			"--faq-radius": "5rem",
 		});
-
-		const linePath = document.querySelector("#faq-more-question-path");
 
 		gsap.set(linePath, { drawSVG: 0 });
 

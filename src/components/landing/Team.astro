@@ -120,12 +120,25 @@ const collaborators = [
 <script>
 	import { gsap } from "gsap";
 	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	import { getPreferences } from "@/stores/accessibilityStore";
 
 	gsap.registerPlugin(ScrollTrigger);
 
 	function init() {
+		const prefs = getPreferences();
+		const reducedMotion = prefs.reducedMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 		const members = gsap.utils.toArray(".team-member") as gsap.DOMTarget[];
 
+		// If reduced motion, show everything statically
+		if (reducedMotion) {
+			members.forEach((member) => {
+				gsap.set(member, { opacity: 1, y: 0 });
+			});
+			return;
+		}
+
+		// Normal animation behavior
 		members.forEach((member, i) => {
 			gsap.from(member, {
 				scrollTrigger: {
