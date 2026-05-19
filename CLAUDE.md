@@ -134,3 +134,12 @@ For GitHub OAuth (Cloudflare Functions):
 Custom Vite config in `astro.config.mjs`:
 - Uses polling for file watching (likely for WSL/Docker compatibility)
 - Server watch configured with `usePolling: true`
+
+---
+
+## Bitacora de Sesiones
+
+**Negocio:** Audacetics
+**Proyecto:** mintaka
+
+Al terminar la sesion de trabajo, registra lo realizado usando `/bitacora` o menciona "terminamos" para que se guarde automaticamente en Obsidian (JorgeTrabaja/Audacetics/mintaka/).
