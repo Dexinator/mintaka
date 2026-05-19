@@ -98,9 +98,7 @@ export const ui = {
 		"contact.emailAddress": "info@audacetics.com",
 		"contact.whatsapp": "WhatsApp",
 		"contact.instagram": "@audacetics",
-		"blog.title": "Blog",
-		"blog.subtitle": "Turismo, Tecnología y Tendencias",
-		"blog.gotoproject": "Ir al proyecto",
+		"work.gotoproject": "Ir al proyecto",
 		// About Us section
 		"aboutus.title": "Sobre Nosotros",
 		"aboutus.checkmark1": "Información turística al alcance de todas las personas",
@@ -124,9 +122,6 @@ export const ui = {
 		"aboutus.experience.subtitles": "Subtitulado",
 		"aboutus.experience.highcontrast": "Alto contraste",
 		"aboutus.experience.narration": "Narraciones",
-		"footer.newsletter": "Suscríbete a",
-		"footer.newsletter2": "nuestro boletín",
-		"footer.yourmail": "Tu correo",
 		// Accessibility
 		"accessibility.button": "Opciones de accesibilidad",
 		"accessibility.panel.title": "Accesibilidad",
@@ -246,9 +241,7 @@ export const ui = {
 		"contact.emailAddress": "info@audacetics.com",
 		"contact.whatsapp": "WhatsApp",
 		"contact.instagram": "@audacetics",
-		"blog.title": "Blog",
-		"blog.subtitle": "Tourism, Technology & Trends",
-		"blog.gotoproject": "Go to project",
+		"work.gotoproject": "Go to project",
 		// About Us section
 		"aboutus.title": "About Us",
 		"aboutus.checkmark1": "Tourist information accessible to everyone",
@@ -272,9 +265,6 @@ export const ui = {
 		"aboutus.experience.subtitles": "Subtitling",
 		"aboutus.experience.highcontrast": "High contrast",
 		"aboutus.experience.narration": "Narrations",
-		"footer.newsletter": "Subscribe to",
-		"footer.newsletter2": "our newsletter",
-		"footer.yourmail": "Your email",
 		// Accessibility
 		"accessibility.button": "Accessibility options",
 		"accessibility.panel.title": "Accessibility",

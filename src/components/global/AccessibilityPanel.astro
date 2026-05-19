@@ -546,12 +546,17 @@ const t = useTranslations(lang);
 	} from "@/stores/accessibilityStore";
 	import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 
-	const lang = getLangFromUrl(new URL(window.location.href));
-	const t = useTranslations(lang);
+	let abortController: AbortController | null = null;
 
 	function initAccessibilityPanel() {
-		const fontDecrease = document.getElementById("font-decrease");
-		const fontIncrease = document.getElementById("font-increase");
+		abortController?.abort();
+		abortController = new AbortController();
+		const { signal } = abortController;
+
+		const t = useTranslations(getLangFromUrl(new URL(window.location.href)));
+
+		const fontDecrease = document.getElementById("font-decrease") as HTMLButtonElement | null;
+		const fontIncrease = document.getElementById("font-increase") as HTMLButtonElement | null;
 		const fontSizeDisplay = document.getElementById("font-size-display");
 		const contrastToggle = document.getElementById("contrast-toggle");
 		const contrastStatus = document.getElementById("contrast-status");
@@ -564,67 +569,44 @@ const t = useTranslations(lang);
 		if (!motionToggle || !motionStatus) return;
 		if (!resetButton) return;
 
-		// Update UI based on current preferences
 		function updateUI() {
 			const prefs = getPreferences();
 
-			// Font size
-			fontSizeDisplay.textContent = `${prefs.fontSize}%`;
-			fontDecrease.disabled = prefs.fontSize === 100;
-			fontIncrease.disabled = prefs.fontSize === 150;
+			fontSizeDisplay!.textContent = `${prefs.fontSize}%`;
+			fontDecrease!.disabled = prefs.fontSize === 100;
+			fontIncrease!.disabled = prefs.fontSize === 150;
 
-			// High contrast
-			contrastToggle.setAttribute("aria-checked", prefs.highContrast.toString());
-			contrastStatus.textContent = prefs.highContrast
+			contrastToggle!.setAttribute("aria-checked", prefs.highContrast.toString());
+			contrastStatus!.textContent = prefs.highContrast
 				? t("accessibility.contrast.on")
 				: t("accessibility.contrast.off");
 
-			// Reduced motion
-			motionToggle.setAttribute("aria-checked", prefs.reducedMotion.toString());
-			motionStatus.textContent = prefs.reducedMotion ? t("accessibility.motion.on") : t("accessibility.motion.off");
+			motionToggle!.setAttribute("aria-checked", prefs.reducedMotion.toString());
+			motionStatus!.textContent = prefs.reducedMotion ? t("accessibility.motion.on") : t("accessibility.motion.off");
 		}
 
-		// Event handlers
-		fontDecrease.addEventListener("click", () => {
-			adjustFontSize("decrease");
-		});
+		fontDecrease.addEventListener("click", () => adjustFontSize("decrease"), { signal });
+		fontIncrease.addEventListener("click", () => adjustFontSize("increase"), { signal });
+		contrastToggle.addEventListener("click", () => toggleContrast(), { signal });
 
-		fontIncrease.addEventListener("click", () => {
-			adjustFontSize("increase");
-		});
-
-		contrastToggle.addEventListener("click", () => {
-			toggleContrast();
-		});
-
+		// Motion change reloads so GSAP ScrollTriggers and CSS transitions reset cleanly.
 		motionToggle.addEventListener("click", () => {
 			toggleMotion();
-			// Reload page to reinitialize GSAP animations with new setting
-			setTimeout(() => {
-				window.location.reload();
-			}, 100);
-		});
+			setTimeout(() => window.location.reload(), 100);
+		}, { signal });
 
 		resetButton.addEventListener("click", () => {
 			resetPreferences();
-			// Show confirmation (optional)
 			const originalText = resetButton.textContent;
 			resetButton.textContent = `✓ ${t("accessibility.reset.confirm")}`;
-			setTimeout(() => {
-				resetButton.textContent = originalText;
-			}, 2000);
-		});
+			setTimeout(() => { resetButton.textContent = originalText; }, 2000);
+		}, { signal });
 
-		// Listen for preference changes
-		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateUI);
+		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateUI, { signal });
 
-		// Initial UI update
 		updateUI();
 	}
 
-	// Initialize on page load
 	initAccessibilityPanel();
-
-	// Re-initialize after view transitions
 	document.addEventListener("astro:after-swap", initAccessibilityPanel);
 </script>

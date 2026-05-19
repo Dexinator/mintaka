@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /work/
+Disallow: /en/work/
 
 Sitemap: https://audacetics.com/sitemap-index.xml

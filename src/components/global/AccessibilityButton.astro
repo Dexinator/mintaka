@@ -145,83 +145,62 @@ const t = useTranslations(lang);
 		ACCESSIBILITY_CHANGE_EVENT,
 	} from "@/stores/accessibilityStore";
 
+	let abortController: AbortController | null = null;
+
 	function initAccessibilityButton() {
+		abortController?.abort();
+		abortController = new AbortController();
+		const { signal } = abortController;
+
 		const button = document.getElementById("accessibility-button");
 		const badge = document.getElementById("accessibility-badge");
 		if (!button || !badge) return;
 
-		// Update badge count
 		function updateBadge() {
-			const prefs = getPreferences();
-			const count = getActiveAdjustmentsCount(prefs);
-
+			const count = getActiveAdjustmentsCount(getPreferences());
 			badge.textContent = count.toString();
-			if (count > 0) {
-				badge.classList.add("visible");
-			} else {
-				badge.classList.remove("visible");
-			}
+			badge.classList.toggle("visible", count > 0);
 		}
 
-		// Toggle panel visibility
+		function closePanel(returnFocus = false) {
+			const panel = document.getElementById("accessibility-panel");
+			button.setAttribute("aria-expanded", "false");
+			panel?.classList.remove("visible");
+			if (returnFocus) button.focus();
+		}
+
 		function togglePanel() {
 			const panel = document.getElementById("accessibility-panel");
 			if (!panel) return;
 
-			const isExpanded = button.getAttribute("aria-expanded") === "true";
-			const newState = !isExpanded;
-
+			const newState = button.getAttribute("aria-expanded") !== "true";
 			button.setAttribute("aria-expanded", newState.toString());
 			panel.classList.toggle("visible", newState);
 
-			// Focus first interactive element in panel when opening
 			if (newState) {
-				setTimeout(() => {
-					const firstButton = panel.querySelector("button");
-					firstButton?.focus();
-				}, 100);
+				setTimeout(() => panel.querySelector("button")?.focus(), 100);
 			}
 		}
 
-		// Event listeners
-		button.addEventListener("click", togglePanel);
+		button.addEventListener("click", togglePanel, { signal });
+		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateBadge, { signal });
 
-		// Listen for preference changes to update badge
-		window.addEventListener(ACCESSIBILITY_CHANGE_EVENT, updateBadge);
-
-		// Initial badge update
-		updateBadge();
-
-		// Close panel when clicking outside
 		document.addEventListener("click", (e) => {
 			const panel = document.getElementById("accessibility-panel");
-			if (!panel) return;
-
+			if (!panel || button.getAttribute("aria-expanded") !== "true") return;
 			const target = e.target as Node;
-			if (
-				!button.contains(target) &&
-				!panel.contains(target) &&
-				button.getAttribute("aria-expanded") === "true"
-			) {
-				button.setAttribute("aria-expanded", "false");
-				panel.classList.remove("visible");
-			}
-		});
+			if (!button.contains(target) && !panel.contains(target)) closePanel();
+		}, { signal });
 
-		// Close panel with Escape key
 		document.addEventListener("keydown", (e) => {
 			if (e.key === "Escape" && button.getAttribute("aria-expanded") === "true") {
-				button.setAttribute("aria-expanded", "false");
-				const panel = document.getElementById("accessibility-panel");
-				panel?.classList.remove("visible");
-				button.focus();
+				closePanel(true);
 			}
-		});
+		}, { signal });
+
+		updateBadge();
 	}
 
-	// Initialize on page load
 	initAccessibilityButton();
-
-	// Re-initialize after view transitions
 	document.addEventListener("astro:after-swap", initAccessibilityButton);
 </script>

@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { getLangFromUrl, useTranslations } from "@i18n/utils";
 import BlobAnimation from "@components/global/BlobAnimation.astro";
 import GrainyGradient from "@components/global/GrainyGradient.astro";
@@ -24,55 +25,32 @@ const values = [
 	{
 		title: t("aboutus.values.accessibility.title"),
 		content: t("aboutus.values.accessibility.content"),
-		icon: "accessibility",
 	},
 	{
 		title: t("aboutus.values.innovation.title"),
 		content: t("aboutus.values.innovation.content"),
-		icon: "innovation",
 	},
 	{
 		title: t("aboutus.values.inclusion.title"),
 		content: t("aboutus.values.inclusion.content"),
-		icon: "inclusion",
 	},
 	{
 		title: t("aboutus.values.quality.title"),
 		content: t("aboutus.values.quality.content"),
-		icon: "quality",
 	},
 	{
 		title: t("aboutus.values.heritage.title"),
 		content: t("aboutus.values.heritage.content"),
-		icon: "heritage",
 	},
 ];
 
 const experienceItems = [
-	{
-		label: t("aboutus.experience.audiodescription"),
-		icon: audiodescripcionIcon,
-	},
-	{
-		label: t("aboutus.experience.easyreading"),
-		icon: lecturaFacilIcon,
-	},
-	{
-		label: t("aboutus.experience.signlanguage"),
-		icon: lenguaSignosIcon,
-	},
-	{
-		label: t("aboutus.experience.subtitles"),
-		icon: subtitulosIcon,
-	},
-	{
-		label: t("aboutus.experience.highcontrast"),
-		icon: null, // Placeholder - icon pending
-	},
-	{
-		label: t("aboutus.experience.narration"),
-		icon: null, // Placeholder - icon pending
-	},
+	{ label: t("aboutus.experience.audiodescription"), image: audiodescripcionIcon },
+	{ label: t("aboutus.experience.easyreading"), image: lecturaFacilIcon },
+	{ label: t("aboutus.experience.signlanguage"), image: lenguaSignosIcon },
+	{ label: t("aboutus.experience.subtitles"), image: subtitulosIcon },
+	{ label: t("aboutus.experience.highcontrast"), svg: "contrast" as const },
+	{ label: t("aboutus.experience.narration"), svg: "narration" as const },
 ];
 ---
 
@@ -144,20 +122,28 @@ const experienceItems = [
 				{t("aboutus.experience.title")}
 			</h3>
 			<div class="mx-auto grid max-w-4xl grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 md:gap-5">
-				{experienceItems.map(({ label, icon }) => (
+				{experienceItems.map((item) => (
 					<div class="experience-item flex flex-col items-center gap-3 rounded-xl bg-white/70 backdrop-blur-sm px-4 py-5 shadow-sm transition-all hover:shadow-md hover:bg-white/90 border border-zinc-200/50">
 						<div class="flex h-14 w-14 items-center justify-center">
-							{icon ? (
-								<img src={icon.src} alt={label} class="h-12 w-12 object-contain" />
+							{"image" in item ? (
+								<Image src={item.image} alt="" width={96} height={96} loading="lazy" decoding="async" class="h-12 w-12 object-contain" />
 							) : (
 								<div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#EE7088]/10">
-									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EE7088]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-									</svg>
+									{item.svg === "contrast" ? (
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EE7088]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+											<circle cx="12" cy="12" r="10" />
+											<path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20" fill="currentColor" />
+										</svg>
+									) : (
+										<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#EE7088]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+											<rect x="9" y="3" width="6" height="12" rx="3" />
+											<path stroke-linecap="round" stroke-linejoin="round" d="M5 11a7 7 0 0014 0M12 18v3M8 21h8" />
+										</svg>
+									)}
 								</div>
 							)}
 						</div>
-						<span class="text-center text-sm font-medium text-zinc-700 md:text-base">{label}</span>
+						<span class="text-center text-sm font-medium text-zinc-700 md:text-base">{item.label}</span>
 					</div>
 				))}
 			</div>
@@ -262,6 +248,9 @@ const experienceItems = [
 		});
 	}
 
-	document.removeEventListener("DOMContentLoaded", init);
-	document.addEventListener("DOMContentLoaded", init);
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init, { once: true });
+	} else {
+		init();
+	}
 </script>

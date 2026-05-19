@@ -105,42 +105,25 @@ export function resetPreferences(): void {
 }
 
 // Apply preferences to the DOM
+// Reduced motion is effective when user opts in OR the OS requests it.
 export function applyPreferences(preferences: AccessibilityPreferences): void {
 	if (typeof window === 'undefined') return;
 
 	const html = document.documentElement;
 
-	// Font size
 	html.setAttribute('data-font-size', preferences.fontSize.toString());
-	html.style.setProperty('--font-scale', (preferences.fontSize / 100).toString());
 
-	// High contrast
-	if (preferences.highContrast) {
-		html.classList.add('high-contrast');
-	} else {
-		html.classList.remove('high-contrast');
-	}
+	html.classList.toggle('high-contrast', preferences.highContrast);
 
-	// Reduced motion
-	if (preferences.reducedMotion) {
-		html.classList.add('reduced-motion');
-	} else {
-		html.classList.remove('reduced-motion');
-	}
+	const systemReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	html.classList.toggle('reduced-motion', preferences.reducedMotion || systemReducedMotion);
 }
 
 // Initialize preferences on page load
 export function initializeAccessibility(): void {
 	if (typeof window === 'undefined') return;
 
-	const preferences = getPreferences();
-	applyPreferences(preferences);
-
-	// Also check system preferences
-	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	if (prefersReducedMotion && !preferences.reducedMotion) {
-		updatePreference('reducedMotion', true);
-	}
+	applyPreferences(getPreferences());
 }
 
 // Get count of active adjustments (for badge)
