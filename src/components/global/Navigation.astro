@@ -18,6 +18,10 @@ let pages = [
 		url: "/",
 	},
 	{
+		title: t("projects"),
+		url: "/#projects",
+	},
+	{
 		title: t("contacts"),
 		url: "/contact/",
 	},
@@ -89,6 +93,7 @@ const { pathname } = Astro.url;
 										<li data-cursor-hover>
 											<a
 												href={translatePath(page.url)}
+												data-xon.click="open = false"
 												class={`inline-block cursor-pointer px-1 py-[0.33rem] ${isActive ? "active" : ""}`}
 												aria-current={isActive ? "page" : undefined}>
 												<span class="menu-item-container inline-block">
@@ -157,18 +162,17 @@ const { pathname } = Astro.url;
 	}
 
 	/* En secciones oscuras, ajustar transparencia del fondo */
-	.navigation.on-dark .nav-background {
-		background-color: rgba(255, 255, 255, 0.05);
+	.navigation.on-dark .nav-background,
+	.navigation.on-dark.collapsed .nav-background {
+		/* Fondo casi opaco: el texto blanco debe leerse también sobre las tarjetas claras de Proyectos */
+		mix-blend-mode: normal;
+		background-color: rgba(71, 68, 150, 0.95);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 	}
 
 	/* Estado colapsado */
 	.navigation.collapsed .nav-background {
 		background-color: rgba(255, 255, 255, 0.15);
-	}
-
-	.navigation.on-dark.collapsed .nav-background {
-		background-color: rgba(255, 255, 255, 0.08);
 	}
 
 	/* Desactivar mix-blend cuando el menú móvil está abierto */
@@ -345,15 +349,14 @@ const { pathname } = Astro.url;
 			endTrigger: ".team-section",
 			end: "top 80px", // Termina cuando llega a Team (fondo claro)
 			toggleClass: { targets: ".navigation", className: "on-dark" },
+			refreshPriority: -1, // Recalcular después del pin de Services, que alarga la página
 			markers: false, // Cambiar a true para debug
-			onToggle: (self) => {
-				console.log("Navigation on-dark:", self.isActive);
-			}
 		});
 
 		// Light logo when Team section is visible
 		ScrollTrigger.create({
 			trigger: ".team-section",
+			refreshPriority: -1,
 			start: "top center",
 			end: "top top",
 			scrub: 0.5,
@@ -376,6 +379,10 @@ const { pathname } = Astro.url;
 			return;
 		}
 
+		// Item shown in the collapsed menu: the active one (or contact, on pages outside the menu)
+		const items = Array.from(pageLinksUl.children) as HTMLElement[];
+		const activeItem = pageLinksUl.querySelector("a.active")?.closest("li") ?? items[items.length - 2];
+
 		let menuCollapseTl = gsap
 			.timeline({
 				defaults: {
@@ -387,18 +394,14 @@ const { pathname } = Astro.url;
 					pageLinksUl.classList.add("collapsed");
 				},
 			})
-			.to("header .nav-container", { width: 180 })
+			.to("header .nav-container", { width: () => activeItem.offsetWidth + 40 })
 			.to(
 				pageLinksUl,
 				{
 					x: () => {
-						const pathName = window.location.pathname;
+						const center = (first: Element, last: Element) => (first.getBoundingClientRect().left + last.getBoundingClientRect().right) / 2;
 
-						if (pathName === "/" || pathName === "/en/") {
-							return "6rem";
-						}
-
-						return "-6rem";
+						return center(items[0], items[items.length - 1]) - center(activeItem, activeItem);
 					},
 				},
 				"<",

@@ -5,12 +5,11 @@ const projectsCollection = defineCollection({
 		z.object({
 			title: z.string(),
 			pubDate: z.date(),
+			// Tie-breaker for projects published in the same month (lower goes first)
+			order: z.number().default(0),
+			type: z.string(),
 			description: z.string(),
-			link: z.string(),
-			author: z.object({
-				name: z.string(),
-				link: z.string(),
-			}),
+			link: z.string().url(),
 			image: z.object({
 				source: image(),
 				alt: z.string(),
