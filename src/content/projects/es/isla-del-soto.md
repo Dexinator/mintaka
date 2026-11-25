@@ -7,5 +7,8 @@ description: "Audioguía adaptada a la accesibilidad y traducida al inglés de l
 link: "https://soto.santamartaccesible.com/"
 image:
     source: "@assets/images/projects/isla-del-soto.webp"
-    alt: "Puente blanco y praderas de la Isla del Soto. 27 minutos, 10 audios, con signoguía LSE, audiodescriptiva, lectura fácil e inglés."
+    alt: "Puente blanco y praderas de la Isla del Soto."
+duration: 27
+audios: 10
+features: ["lse", "audiodescription", "easyreading", "english"]
 ---

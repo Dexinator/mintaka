@@ -10,6 +10,10 @@ const projectsCollection = defineCollection({
 			type: z.string(),
 			description: z.string(),
 			link: z.string().url(),
+			// Shown as tags on the card
+			duration: z.number().optional(), // minutes
+			audios: z.number().optional(),
+			features: z.array(z.enum(["lse", "audiodescription", "easyreading", "subtitles", "english"])).default([]),
 			image: z.object({
 				source: image(),
 				alt: z.string(),

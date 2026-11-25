@@ -7,5 +7,8 @@ description: "Audioguía adaptada a la accesibilidad y traducida al inglés de l
 link: "https://murales.santamartaccesible.com/"
 image:
     source: "@assets/images/projects/ruta-murales.webp"
-    alt: "Mural urbano con personajes de dibujos animados. 40 minutos, 20 audios, con signoguía LSE, audiodescriptiva, lectura fácil e inglés."
+    alt: "Mural urbano con personajes de dibujos animados."
+duration: 40
+audios: 20
+features: ["lse", "audiodescription", "easyreading", "english"]
 ---
