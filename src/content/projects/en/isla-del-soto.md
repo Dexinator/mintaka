@@ -7,5 +7,8 @@ description: "Accessible audio guide, translated into English, for Isla del Soto
 link: "https://soto.santamartaccesible.com/"
 image:
     source: "@assets/images/projects/isla-del-soto.webp"
-    alt: "White bridge and meadows on Isla del Soto. 27 minutes, 10 audio tracks, with Spanish Sign Language, audio description, easy reading and English."
+    alt: "White bridge and meadows on Isla del Soto."
+duration: 27
+audios: 10
+features: ["lse", "audiodescription", "easyreading", "english"]
 ---

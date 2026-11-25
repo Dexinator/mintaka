@@ -7,5 +7,6 @@ description: "Audioguía adaptada a la accesibilidad y traducida al inglés del 
 link: "https://www.audioguiamancomunidadrutadelaplata.com/"
 image:
     source: "@assets/images/projects/centro-interpretacion-ruta-plata.webp"
-    alt: "Cartel de la audioguía accesible con el emblema del centro, un código para escanear e iconos de audio, audiodescripción, lectura fácil, subtítulos, lengua de signos e inglés."
+    alt: "Placa del Centro de Interpretación Ruta de la Plata - Sierras de Béjar con una calzada entre montañas, sobre un muro de piedra."
+features: ["lse", "audiodescription", "easyreading", "subtitles", "english"]
 ---

@@ -7,5 +7,8 @@ description: "Accessible audio guide, translated into English, for the urban mur
 link: "https://murales.santamartaccesible.com/"
 image:
     source: "@assets/images/projects/ruta-murales.webp"
-    alt: "Urban mural of cartoon characters. 40 minutes, 20 audio tracks, with Spanish Sign Language, audio description, easy reading and English."
+    alt: "Urban mural of cartoon characters."
+duration: 40
+audios: 20
+features: ["lse", "audiodescription", "easyreading", "english"]
 ---

@@ -7,5 +7,6 @@ description: "Accessible audio guide, translated into English, for the Ruta de l
 link: "https://www.audioguiamancomunidadrutadelaplata.com/"
 image:
     source: "@assets/images/projects/centro-interpretacion-ruta-plata.webp"
-    alt: "Accessible audio guide poster with the centre's emblem, a code to scan and icons for audio, audio description, easy reading, subtitles, sign language and English."
+    alt: "Plaque of the Ruta de la Plata - Sierras de Béjar Interpretation Centre showing a paved road between mountains, on a stone wall."
+features: ["lse", "audiodescription", "easyreading", "subtitles", "english"]
 ---
